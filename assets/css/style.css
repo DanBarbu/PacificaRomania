@@ -202,6 +202,40 @@ section{padding:76px 0}
 .object .further{font-size:0.85rem}
 .object .further a{color:var(--ocean); text-decoration:underline}
 
+/* ---------- Region chips (collection sub-nav) ---------- */
+.region-chips{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px}
+.region-chips .chip{
+  font-size:0.8rem; letter-spacing:0.03em; text-decoration:none;
+  padding:8px 16px; border:1px solid var(--line); border-radius:22px; color:#4a463f;
+  transition:background .15s ease, color .15s ease, border-color .15s ease;
+}
+.region-chips .chip:hover{border-color:var(--ochre); color:var(--ochre)}
+.region-chips .chip.is-active{background:var(--ocean); color:var(--paper); border-color:var(--ocean)}
+
+.region-intro{max-width:70ch; font-size:1.08rem; color:#3a3733; margin:0 0 40px}
+.region-seealso{display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-top:48px; padding-top:26px; border-top:1px solid var(--line)}
+.region-seealso a{text-decoration:none; font-weight:600; color:var(--ocean); font-size:0.9rem}
+
+/* ---------- Object gallery ---------- */
+.object-gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:34px 30px}
+@media (max-width:900px){ .object-gallery{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:600px){ .object-gallery{grid-template-columns:1fr} }
+.object-card{margin:0; display:flex; flex-direction:column}
+.object-img{
+  background:var(--ocean-deep); border:1px solid var(--line);
+  aspect-ratio:1/1; overflow:hidden; display:flex; align-items:center; justify-content:center;
+}
+.object-img img{width:100%; height:100%; object-fit:cover; transition:transform .4s ease}
+.object-card:hover .object-img img{transform:scale(1.04)}
+.object-card figcaption{padding:16px 2px 0}
+.object-card h3{font-size:1.12rem; margin:0 0 5px; line-height:1.2}
+.object-maker{font-size:0.78rem; letter-spacing:0.03em; color:var(--ochre-dim); font-weight:600; margin:0 0 9px; text-transform:uppercase}
+.object-note{font-size:0.92rem; color:#4a463f; margin:0}
+
+/* region index cards use a photo */
+.card-figure.has-photo{aspect-ratio:4/3; padding:0}
+.card-figure.has-photo img{width:100%; height:100%; object-fit:cover}
+
 /* ---------- Journal ---------- */
 .journal-list{display:flex; flex-direction:column}
 .journal-row{
