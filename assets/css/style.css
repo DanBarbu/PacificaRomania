@@ -239,6 +239,12 @@ section{padding:76px 0}
 .essay-tags{display:flex; flex-wrap:wrap; gap:8px; margin-top:2.4em}
 .tag{font-size:0.74rem; letter-spacing:0.04em; padding:6px 12px; border:1px solid var(--line); border-radius:20px; color:#4a463f}
 
+.essay-table-wrap{overflow-x:auto; margin:1.8em 0}
+.essay-body table{border-collapse:collapse; width:100%; font-size:0.94rem; min-width:460px}
+.essay-body th, .essay-body td{border:1px solid var(--line); padding:10px 14px; text-align:left; vertical-align:top}
+.essay-body thead th{background:var(--paper-dim); font-family:var(--sans); font-weight:700; color:var(--ocean)}
+.essay-body tbody th{font-family:var(--sans); font-weight:700; color:var(--ochre-dim); white-space:nowrap}
+
 .essay-nav{border-top:1px solid var(--line); padding:36px 28px 80px; max-width:70ch; margin:0 auto; display:flex; justify-content:space-between; gap:20px}
 .essay-nav a{text-decoration:none; font-size:0.9rem; font-weight:600; color:var(--ocean)}
 
