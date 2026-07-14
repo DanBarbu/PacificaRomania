@@ -6,6 +6,7 @@
 <title>The Sacralization of Measure — PacificaRomania Journal</title>
 <meta name="description" content="Burmese weights in the PacificaRomania collection.">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script>(function(){try{if(localStorage.getItem('pr-lang')==='ro')document.documentElement.className+=' lang-ro';}catch(e){}})();</script>
 </head>
 <body>
 
@@ -17,24 +18,28 @@
         <line x1="20" y1="15" x2="20" y2="30" stroke="#a8532c" stroke-width="2.5"/>
         <path d="M6 33 Q13 27 20 33 T34 33" stroke="#10333d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       </svg>
-      <span class="brand-name">PacificaRomania<small>Art &amp; Cosmology Collection</small></span>
+      <span class="brand-name">PacificaRomania<small><span data-l="en">Art &amp; Cosmology Collection</span><span data-l="ro">Colecție de artă și cosmologie</span></small></span>
     </a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="../collection.html">Collection</a>
-      <a href="../journal.html" class="is-active">Journal</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../index.html"><span data-l="en">Home</span><span data-l="ro">Acasă</span></a>
+      <a href="../collection.html"><span data-l="en">Collection</span><span data-l="ro">Colecție</span></a>
+      <a href="../journal.html" class="is-active"><span data-l="en">Journal</span><span data-l="ro">Jurnal</span></a>
+      <a href="../about.html"><span data-l="en">About</span><span data-l="ro">Despre</span></a>
+      <a href="../contact.html"><span data-l="en">Contact</span><span data-l="ro">Contact</span></a>
+      <div class="lang-switch" role="group" aria-label="Language / Limbă">
+        <button type="button" data-setlang="en" aria-pressed="true">EN</button>
+        <button type="button" data-setlang="ro" aria-pressed="false">RO</button>
+      </div>
     </nav>
   </div>
 </header>
 
 <section class="essay-hero">
   <div class="wrap">
-    <span class="eyebrow">Myanmar</span>
-    <h1>The Sacralization of Measure</h1>
-    <p class="lede">Burmese weights in the PacificaRomania collection.</p>
+    <span class="eyebrow"><span data-l="en">Myanmar</span><span data-l="ro">Myanmar</span></span>
+    <h1><span data-l="en">The Sacralization of Measure</span><span data-l="ro">Sacralizarea măsurii</span></h1>
+    <p class="lede"><span data-l="en">Burmese weights in the PacificaRomania collection.</span><span data-l="ro">Greutățile birmaneze din bronz — chinthe, elefantul și peștele — unesc Cerul, Pământul și Lumea de Jos.</span></p>
   </div>
 </section>
 <figure class="essay-lead">
@@ -60,9 +65,9 @@
 </article>
 
 <div class="essay-nav">
-  <a href="the-sacred-papot.html">&larr; Spiritual Armor: The Sacred Papot</a>
-  <a href="../journal.html">All essays</a>
-  <a href="aloi-pilioko.html">The “Picasso of the Pacific” &rarr;</a>
+  <a href="the-sacred-papot.html">&larr; <span data-l="en">Spiritual Armor: The Sacred Papot</span><span data-l="ro">Armură spirituală: sacrul papot</span></a>
+  <a href="../journal.html"><span data-l="en">All essays</span><span data-l="ro">Toate eseurile</span></a>
+  <a href="aloi-pilioko.html"><span data-l="en">The “Picasso of the Pacific”</span><span data-l="ro">„Picasso al Pacificului”</span> &rarr;</a>
 </div>
 
 <footer class="site-footer">
@@ -98,6 +103,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/i18n.js"></script>
 <script>document.querySelectorAll('.yr').forEach(function(e){e.textContent = new Date().getFullYear();});</script>
 </body>
 </html>

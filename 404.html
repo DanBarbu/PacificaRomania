@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Page not found — PacificaRomania</title>
 <link rel="stylesheet" href="assets/css/style.css">
+<script>(function(){try{if(localStorage.getItem('pr-lang')==='ro')document.documentElement.className+=' lang-ro';}catch(e){}})();</script>
 </head>
 <body>
 
@@ -16,14 +17,18 @@
         <line x1="20" y1="15" x2="20" y2="30" stroke="#a8532c" stroke-width="2.5"/>
         <path d="M6 33 Q13 27 20 33 T34 33" stroke="#10333d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       </svg>
-      <span class="brand-name">PacificaRomania<small>Art &amp; Cosmology Collection</small></span>
+      <span class="brand-name">PacificaRomania<small><span data-l="en">Art &amp; Cosmology Collection</span><span data-l="ro">Colecție de artă și cosmologie</span></small></span>
     </a>
     <nav class="nav">
-      <a href="index.html">Home</a>
-      <a href="collection.html">Collection</a>
-      <a href="journal.html">Journal</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="index.html"><span data-l="en">Home</span><span data-l="ro">Acasă</span></a>
+      <a href="collection.html"><span data-l="en">Collection</span><span data-l="ro">Colecție</span></a>
+      <a href="journal.html"><span data-l="en">Journal</span><span data-l="ro">Jurnal</span></a>
+      <a href="about.html"><span data-l="en">About</span><span data-l="ro">Despre</span></a>
+      <a href="contact.html"><span data-l="en">Contact</span><span data-l="ro">Contact</span></a>
+          <div class="lang-switch" role="group" aria-label="Language / Limbă">
+        <button type="button" data-setlang="en" aria-pressed="true">EN</button>
+        <button type="button" data-setlang="ro" aria-pressed="false">RO</button>
+      </div>
     </nav>
   </div>
 </header>
@@ -37,5 +42,6 @@
   </div>
 </section>
 
+<script src="assets/js/i18n.js"></script>
 </body>
 </html>

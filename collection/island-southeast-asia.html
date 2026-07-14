@@ -6,6 +6,7 @@
 <title>Island Southeast Asia — PacificaRomania Collection</title>
 <meta name="description" content="Dayak baby carriers, Batak medicine vessels, Burmese weights, and the shamanic masks of the Malaysian Orang Asli.">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script>(function(){try{if(localStorage.getItem('pr-lang')==='ro')document.documentElement.className+=' lang-ro';}catch(e){}})();</script>
 </head>
 <body>
 
@@ -17,24 +18,28 @@
         <line x1="20" y1="15" x2="20" y2="30" stroke="#a8532c" stroke-width="2.5"/>
         <path d="M6 33 Q13 27 20 33 T34 33" stroke="#10333d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       </svg>
-      <span class="brand-name">PacificaRomania<small>Art &amp; Cosmology Collection</small></span>
+      <span class="brand-name">PacificaRomania<small><span data-l="en">Art &amp; Cosmology Collection</span><span data-l="ro">Colecție de artă și cosmologie</span></small></span>
     </a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="../collection.html" class="is-active">Collection</a>
-      <a href="../journal.html">Journal</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../index.html"><span data-l="en">Home</span><span data-l="ro">Acasă</span></a>
+      <a href="../collection.html" class="is-active"><span data-l="en">Collection</span><span data-l="ro">Colecție</span></a>
+      <a href="../journal.html"><span data-l="en">Journal</span><span data-l="ro">Jurnal</span></a>
+      <a href="../about.html"><span data-l="en">About</span><span data-l="ro">Despre</span></a>
+      <a href="../contact.html"><span data-l="en">Contact</span><span data-l="ro">Contact</span></a>
+          <div class="lang-switch" role="group" aria-label="Language / Limbă">
+        <button type="button" data-setlang="en" aria-pressed="true">EN</button>
+        <button type="button" data-setlang="ro" aria-pressed="false">RO</button>
+      </div>
     </nav>
   </div>
 </header>
 
 <section class="hero" style="padding:60px 0 34px">
   <div class="wrap">
-    <span class="eyebrow">Collection &middot; Later Chapter</span>
-    <h1 style="max-width:20ch">Island Southeast Asia</h1>
-    <p class="lede">Guardians of the Threshold.</p>
+    <span class="eyebrow"><span data-l="en">Collection &middot; Later Chapter</span><span data-l="ro">Colecție &middot; Capitol ulterior</span></span>
+    <h1 style="max-width:20ch"><span data-l="en">Island Southeast Asia</span><span data-l="ro">Asia de Sud-Est insulară</span></h1>
+    <p class="lede"><span data-l="en">Guardians of the Threshold.</span><span data-l="ro">Gardienii pragului.</span></p>
     <nav class="region-chips">
       <a class="chip" href="australia.html">Australia</a>
       <a class="chip" href="melanesia.html">Melanesia</a>
@@ -47,9 +52,9 @@
 
 <section style="padding-top:30px">
   <div class="wrap">
-    <p class="region-intro">Beyond the Pacific proper, the collection extends into Island Southeast Asia &mdash; Borneo, Sumatra, the Malay Peninsula, and Myanmar &mdash; where the same Eliadean grammar of threshold, ancestor, and sacred centre recurs in carved hardwood, buffalo horn, and cast bronze. Each object is explored at length in the <a href="../journal.html">Journal</a>.</p>
+    <p class="region-intro"><span data-l="en">Beyond the Pacific proper, the collection extends into Island Southeast Asia &mdash; Borneo, Sumatra, the Malay Peninsula, and Myanmar &mdash; where the same Eliadean grammar of threshold, ancestor, and sacred centre recurs in carved hardwood, buffalo horn, and cast bronze. Each object is explored at length in the <a href="../journal.html">Journal</a>.</span><span data-l="ro">Dincolo de Pacificul propriu-zis, colecția se extinde în Asia de Sud-Est insulară &mdash; Borneo, Sumatra, Peninsula Malaeză și Myanmar &mdash; unde aceeași gramatică eliadiană a pragului, a strămoșului și a centrului sacru revine în lemn tare sculptat, corn de bivol și bronz turnat. Fiecare obiect este explorat pe larg în <a href="../journal.html">Jurnal</a>.</span></p>
 
-    <h2 style="margin-top:14px">Borneo, Sumatra &amp; the Malay Peninsula</h2>
+    <h2 style="margin-top:14px"><span data-l="en">Borneo, Sumatra &amp; the Malay Peninsula</span><span data-l="ro">Borneo, Sumatra și Peninsula Malaeză</span></h2>
     <div class="object-gallery" style="margin-top:24px">
 
       <figure class="object-card">
@@ -113,7 +118,7 @@
 
     </div>
 
-    <h2 style="margin-top:56px">Related: The Picasso of the Pacific</h2>
+    <h2 style="margin-top:56px"><span data-l="en">Related: The Picasso of the Pacific</span><span data-l="ro">În legătură: Picasso al Pacificului</span></h2>
     <div class="object-gallery" style="margin-top:24px">
 
       <figure class="object-card">
@@ -128,9 +133,9 @@
     </div>
 
     <div class="region-seealso">
-      <a href="polynesia.html">&larr; Polynesia</a>
-      <a href="../collection.html">All regions</a>
-      <a href="../journal.html">Journal &rarr;</a>
+      <a href="polynesia.html"><span data-l="en">&larr; Polynesia</span><span data-l="ro">&larr; Polinezia</span></a>
+      <a href="../collection.html"><span data-l="en">All regions</span><span data-l="ro">Toate regiunile</span></a>
+      <a href="../journal.html"><span data-l="en">Journal &rarr;</span><span data-l="ro">Jurnal &rarr;</span></a>
     </div>
   </div>
 </section>
@@ -172,6 +177,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/i18n.js"></script>
 <script>document.querySelectorAll('.yr').forEach(function(e){e.textContent=new Date().getFullYear();});</script>
 </body>
 </html>

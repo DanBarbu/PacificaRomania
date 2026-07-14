@@ -6,6 +6,7 @@
 <title>Aboriginal Birds in Space — PacificaRomania Journal</title>
 <meta name="description" content="A preface to the installation: Seven Sisters Dreaming, Arnhem Land poles, and Brâncuși's ascent.">
 <link rel="stylesheet" href="../assets/css/style.css">
+<script>(function(){try{if(localStorage.getItem('pr-lang')==='ro')document.documentElement.className+=' lang-ro';}catch(e){}})();</script>
 </head>
 <body>
 
@@ -17,24 +18,28 @@
         <line x1="20" y1="15" x2="20" y2="30" stroke="#a8532c" stroke-width="2.5"/>
         <path d="M6 33 Q13 27 20 33 T34 33" stroke="#10333d" stroke-width="2.5" fill="none" stroke-linecap="round"/>
       </svg>
-      <span class="brand-name">PacificaRomania<small>Art &amp; Cosmology Collection</small></span>
+      <span class="brand-name">PacificaRomania<small><span data-l="en">Art &amp; Cosmology Collection</span><span data-l="ro">Colecție de artă și cosmologie</span></small></span>
     </a>
     <button class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">&#9776;</button>
     <nav class="nav">
-      <a href="../index.html">Home</a>
-      <a href="../collection.html">Collection</a>
-      <a href="../journal.html" class="is-active">Journal</a>
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
+      <a href="../index.html"><span data-l="en">Home</span><span data-l="ro">Acasă</span></a>
+      <a href="../collection.html"><span data-l="en">Collection</span><span data-l="ro">Colecție</span></a>
+      <a href="../journal.html" class="is-active"><span data-l="en">Journal</span><span data-l="ro">Jurnal</span></a>
+      <a href="../about.html"><span data-l="en">About</span><span data-l="ro">Despre</span></a>
+      <a href="../contact.html"><span data-l="en">Contact</span><span data-l="ro">Contact</span></a>
+      <div class="lang-switch" role="group" aria-label="Language / Limbă">
+        <button type="button" data-setlang="en" aria-pressed="true">EN</button>
+        <button type="button" data-setlang="ro" aria-pressed="false">RO</button>
+      </div>
     </nav>
   </div>
 </header>
 
 <section class="essay-hero">
   <div class="wrap">
-    <span class="eyebrow">Australia</span>
-    <h1>Aboriginal Birds in Space</h1>
-    <p class="lede">A preface to the installation: Seven Sisters Dreaming, Arnhem Land poles, and Brâncuși's ascent.</p>
+    <span class="eyebrow"><span data-l="en">Australia</span><span data-l="ro">Australia</span></span>
+    <h1><span data-l="en">Aboriginal Birds in Space</span><span data-l="ro">Păsări aborigene în spațiu</span></h1>
+    <p class="lede"><span data-l="en">A preface to the installation: Seven Sisters Dreaming, Arnhem Land poles, and Brâncuși's ascent.</span><span data-l="ro">O prefață la instalație: Visul Celor Șapte Surori, stâlpii din Arnhem Land și ascensiunea lui Brâncuși.</span></p>
   </div>
 </section>
 <figure class="essay-lead">
@@ -68,9 +73,9 @@
 </article>
 
 <div class="essay-nav">
-  <a href="asaro-mudmen.html">&larr; Living Ancestors</a>
-  <a href="../journal.html">All essays</a>
-  <a href="nguzu-nguzu-and-the-tomoko.html">The Spirit of the Tomoko &rarr;</a>
+  <a href="asaro-mudmen.html">&larr; <span data-l="en">Living Ancestors</span><span data-l="ro">Strămoși vii</span></a>
+  <a href="../journal.html"><span data-l="en">All essays</span><span data-l="ro">Toate eseurile</span></a>
+  <a href="nguzu-nguzu-and-the-tomoko.html"><span data-l="en">The Spirit of the Tomoko</span><span data-l="ro">Spiritul canoei Tomoko</span> &rarr;</a>
 </div>
 
 <footer class="site-footer">
@@ -106,6 +111,7 @@
 </footer>
 
 <script src="../assets/js/main.js"></script>
+<script src="../assets/js/i18n.js"></script>
 <script>document.querySelectorAll('.yr').forEach(function(e){e.textContent = new Date().getFullYear();});</script>
 </body>
 </html>

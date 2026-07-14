@@ -19,6 +19,22 @@
 
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
+
+/* ---------- Bilingual EN/RO toggle ---------- */
+html:not(.lang-ro) [data-l="ro"]{display:none !important}
+html.lang-ro [data-l="en"]{display:none !important}
+.lang-switch{display:inline-flex; align-items:center; border:1px solid var(--line); border-radius:20px; overflow:hidden; margin-left:10px}
+.lang-switch button{
+  background:none; border:0; margin:0; padding:7px 12px; cursor:pointer;
+  font-family:var(--sans); font-size:0.74rem; font-weight:700; letter-spacing:0.06em; color:#6b665c;
+  line-height:1;
+}
+.lang-switch button + button{border-left:1px solid var(--line)}
+.lang-switch button:hover{color:var(--ochre)}
+.lang-switch button.active{background:var(--ocean); color:var(--paper)}
+@media (max-width:780px){
+  .lang-switch{margin:8px 4px 4px; align-self:flex-start}
+}
 body{
   margin:0;
   background:var(--paper);
