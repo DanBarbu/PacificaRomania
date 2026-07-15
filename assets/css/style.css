@@ -255,17 +255,23 @@ section{padding:76px 0}
 /* ---------- Journal ---------- */
 .journal-list{display:flex; flex-direction:column}
 .journal-row{
-  display:grid; grid-template-columns:160px 1fr auto; gap:28px; align-items:baseline;
-  padding:26px 0; border-top:1px solid var(--line); text-decoration:none; color:var(--ink);
+  display:grid; grid-template-columns:96px 132px 1fr auto; gap:24px; align-items:center;
+  padding:22px 0; border-top:1px solid var(--line); text-decoration:none; color:var(--ink);
 }
 .journal-row:last-child{border-bottom:1px solid var(--line)}
 .journal-row:hover h3{color:var(--ochre)}
+.journal-thumb{
+  width:96px; height:72px; object-fit:cover; display:block;
+  border:1px solid var(--line); background:var(--ocean-deep);
+}
+.journal-row:hover .journal-thumb{border-color:var(--ochre)}
 .journal-date{font-size:0.82rem; color:#6b665c; letter-spacing:0.03em}
 .journal-row h3{margin:0 0 6px}
 .journal-row p{margin:0; color:#4a463f; font-size:0.94rem}
 .journal-arrow{font-size:1.4rem; color:var(--ochre); align-self:center}
 @media (max-width:640px){
-  .journal-row{grid-template-columns:1fr; gap:6px}
+  .journal-row{grid-template-columns:1fr; gap:10px}
+  .journal-thumb{width:100%; height:200px}
   .journal-arrow{display:none}
 }
 
