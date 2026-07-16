@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Site Admin — PacificaRomania</title>
+<meta name="description" content="Private admin monitoring hub for pacificaromania.space.">
+<link rel="stylesheet" href="assets/css/style.css">
+<style>
+  .admin-wrap{max-width:860px;margin:0 auto;padding:2.5rem 1.25rem 4rem}
+  .admin-card{border:1px solid #d9cdb8;border-radius:10px;padding:1.5rem 1.5rem;margin:1.25rem 0;background:#fbf7ef}
+  .admin-card h2{margin:0 0 .4rem;font-size:1.15rem}
+  .admin-note{font-size:.85rem;color:#6b5d47;margin:.2rem 0 0}
+  .admin-btn{display:inline-block;background:#10333d;color:#fff;text-decoration:none;padding:.6rem 1.1rem;border-radius:6px;font-weight:600}
+  .admin-btn:hover{background:#0a232a}
+  .utm-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem 1rem;margin:.75rem 0}
+  .utm-grid label{display:flex;flex-direction:column;font-size:.8rem;font-weight:600;color:#4a3f2e;gap:.25rem}
+  .utm-grid input{font:inherit;padding:.45rem .55rem;border:1px solid #cdbfa5;border-radius:5px;background:#fff}
+  .utm-full{grid-column:1 / -1}
+  .utm-out{grid-column:1 / -1;display:flex;gap:.5rem;align-items:stretch}
+  .utm-out input{flex:1;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem}
+  .utm-copy{white-space:nowrap;background:#c1962f;color:#10231a;border:0;border-radius:5px;padding:0 .9rem;font-weight:700;cursor:pointer}
+  .utm-copy:hover{background:#a87f22}
+  .admin-ref{font-size:.85rem;color:#4a3f2e;line-height:1.55}
+  .admin-ref code{background:#efe7d6;padding:.05rem .3rem;border-radius:3px}
+  @media (max-width:560px){.utm-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html">
+      <span class="brand-name">PacificaRomania<small>Admin</small></span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">← Back to site</a>
+    </nav>
+  </div>
+</header>
+
+<main class="admin-wrap">
+  <h1>Site admin &amp; monitoring</h1>
+  <p class="admin-note">
+    This page is <strong>public</strong> (GitHub Pages has no login) but hidden
+    from search engines (<code>noindex</code>) and carries no secrets. It links
+    to your private analytics dashboard and helps you tag ad-campaign links.
+  </p>
+
+  <section class="admin-card">
+    <h2>Traffic analytics dashboard</h2>
+    <p class="admin-note">
+      Visitor counts, countries/regions, referrers, real-time activity and
+      ad-campaign performance. Hosted on your own subdomain (Umami). Login is
+      required — only you see the data.
+    </p>
+    <p style="margin:1rem 0 0">
+      <a class="admin-btn" href="https://stats.pacificaromania.space"
+         target="_blank" rel="noopener noreferrer">Open analytics dashboard ↗</a>
+    </p>
+    <p class="admin-note" style="margin-top:.8rem">
+      Not set up yet? Follow <code>docs/analytics-setup.md</code> in the repo,
+      then paste the Website ID into <code>tools/build_seo.py</code> and run it.
+    </p>
+  </section>
+
+  <section class="admin-card">
+    <h2>Ad-campaign link builder (UTM)</h2>
+    <p class="admin-note">
+      Paste the destination page, describe the campaign, and copy the tagged
+      link to use in your ad. Umami reports these under Campaigns.
+    </p>
+    <div class="utm-grid">
+      <label class="utm-full">Destination URL
+        <input id="u-url" list="u-pages" value="https://pacificaromania.space/" placeholder="https://pacificaromania.space/…">
+      </label>
+      <datalist id="u-pages">
+        <option value="https://pacificaromania.space/"></option>
+        <option value="https://pacificaromania.space/collection.html"></option>
+        <option value="https://pacificaromania.space/journal.html"></option>
+        <option value="https://pacificaromania.space/about.html"></option>
+        <option value="https://pacificaromania.space/contact.html"></option>
+      </datalist>
+      <label>Source <small>utm_source</small>
+        <input id="u-source" placeholder="facebook, instagram, newsletter">
+      </label>
+      <label>Medium <small>utm_medium</small>
+        <input id="u-medium" placeholder="cpc, social, email, banner">
+      </label>
+      <label>Campaign <small>utm_campaign</small>
+        <input id="u-campaign" placeholder="spring_exhibition">
+      </label>
+      <label>Content <small>utm_content (optional)</small>
+        <input id="u-content" placeholder="ad_variant_a">
+      </label>
+      <label class="utm-full">Term <small>utm_term (optional, paid keywords)</small>
+        <input id="u-term" placeholder="oceanic art">
+      </label>
+      <div class="utm-out">
+        <input id="u-out" readonly value="https://pacificaromania.space/">
+        <button type="button" class="utm-copy" id="u-copy">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="admin-card">
+    <h2>Quick reference</h2>
+    <div class="admin-ref">
+      <p><strong>UTM conventions</strong> — keep them lowercase and consistent so
+      reports stay clean: <code>utm_source</code> = where (facebook),
+      <code>utm_medium</code> = type (social / cpc / email),
+      <code>utm_campaign</code> = the campaign name.</p>
+      <p><strong>Privacy / GDPR</strong> — Umami is cookieless and does not store
+      personal data or raw IPs, so no consent banner is required. If you later
+      switch to a tool that logs individual IPs (e.g. Matomo full-IP), add a
+      consent notice.</p>
+      <p><strong>Turning analytics on</strong> — deploy Umami, create a website
+      for <code>pacificaromania.space</code>, copy its Website ID into
+      <code>UMAMI_WEBSITE_ID</code> in <code>tools/build_seo.py</code>, run
+      <code>python3 tools/build_seo.py</code>, then commit &amp; push.</p>
+    </div>
+  </section>
+</main>
+
+<script>
+(function(){
+  var ids=["url","source","medium","campaign","content","term"];
+  var el={}; ids.forEach(function(k){el[k]=document.getElementById("u-"+k);});
+  var out=document.getElementById("u-out");
+  function build(){
+    var base=(el.url.value||"").trim();
+    if(!base){out.value="";return;}
+    var params=[
+      ["utm_source",el.source.value],
+      ["utm_medium",el.medium.value],
+      ["utm_campaign",el.campaign.value],
+      ["utm_content",el.content.value],
+      ["utm_term",el.term.value]
+    ].filter(function(p){return p[1] && p[1].trim();});
+    var q=params.map(function(p){
+      return encodeURIComponent(p[0])+"="+encodeURIComponent(p[1].trim());
+    }).join("&");
+    if(!q){out.value=base;return;}
+    out.value=base+(base.indexOf("?")>-1?"&":"?")+q;
+  }
+  ids.forEach(function(k){el[k].addEventListener("input",build);});
+  document.getElementById("u-copy").addEventListener("click",function(){
+    out.select();
+    try{
+      if(navigator.clipboard){navigator.clipboard.writeText(out.value);}
+      else{document.execCommand("copy");}
+      this.textContent="Copied";
+      var b=this; setTimeout(function(){b.textContent="Copy";},1200);
+    }catch(e){}
+  });
+  build();
+})();
+</script>
+</body>
+</html>

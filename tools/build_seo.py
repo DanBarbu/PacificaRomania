@@ -1,18 +1,29 @@
 #!/usr/bin/env python3
 """
-build_seo.py — regenerate sitemap.xml and inject SEO + security head tags.
+build_seo.py — regenerate sitemap.xml and inject SEO + security + analytics tags.
 
 Run from the repository root:
 
     python3 tools/build_seo.py
 
-It is idempotent and safe to re-run after adding new pages:
+It is idempotent and safe to re-run after adding new pages or after enabling
+analytics:
   * Adds <link rel="canonical">, Open Graph and Twitter card tags to any
     HTML page that does not already have them (keyed on 'og:title').
-  * Adds a Content-Security-Policy + referrer meta to any page missing it.
+  * Upserts a Content-Security-Policy + referrer meta on every page. The CSP is
+    widened automatically to allow the analytics domain ONLY when analytics is
+    enabled (see UMAMI_WEBSITE_ID below).
+  * Upserts the Umami analytics snippet on every content page when enabled.
   * Rebuilds sitemap.xml from the current set of pages.
 
-Add a new essay's share image by extending ESSAY_IMG below.
+--- Analytics setup (Umami, self-hosted on stats.pacificaromania.space) -------
+1. Deploy Umami and create a website for pacificaromania.space (see
+   docs/analytics-setup.md).
+2. Copy the generated "Website ID" (a UUID) into UMAMI_WEBSITE_ID below.
+3. Run:  python3 tools/build_seo.py
+   -> the tracker tag + widened CSP are written into every page.
+Leaving UMAMI_WEBSITE_ID empty keeps analytics OFF and the CSP tight; nothing
+loads from the stats subdomain. This is the safe default.
 """
 import os
 import re
@@ -21,6 +32,18 @@ import datetime
 
 BASE = "https://pacificaromania.space/"
 DEFAULT_IMG = "assets/images/folio/aboriginal-birds-in-space.jpg"
+
+# ---- Analytics (Umami) -------------------------------------------------------
+# Self-hosted Umami dashboard. Point stats.pacificaromania.space DNS at your
+# deployment (docs/analytics-setup.md). Paste the website UUID to switch on.
+UMAMI_DOMAIN = "https://stats.pacificaromania.space"
+UMAMI_SCRIPT = UMAMI_DOMAIN + "/script.js"
+UMAMI_WEBSITE_ID = ""  # e.g. "0f2c...uuid..." — empty = analytics disabled
+ANALYTICS_ON = bool(UMAMI_WEBSITE_ID.strip())
+
+# Pages never tracked / never indexed / never SEO-tagged.
+EXCLUDE = {"admin.html"}          # hand-maintained admin hub (noindex)
+NO_INDEX = {"404.html"}           # kept out of the sitemap only
 
 # Per-essay Open Graph image (slug -> file under assets/images/folio/).
 ESSAY_IMG = {
@@ -36,14 +59,33 @@ ESSAY_IMG = {
     "raja-bomoh": "raja-bomoh.jpg",
 }
 
-CSP = (
-    "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; "
-    "script-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; "
-    "base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests"
-)
 
-# Pages excluded from the sitemap (still get head tags where useful).
-NO_INDEX = {"404.html"}
+def compute_csp():
+    script = "script-src 'self' 'unsafe-inline'"
+    connect = "connect-src 'self'"
+    if ANALYTICS_ON:
+        script += " " + UMAMI_DOMAIN
+        connect += " " + UMAMI_DOMAIN
+    return (
+        f"default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; "
+        f"{script}; {connect}; font-src 'self'; object-src 'none'; "
+        f"base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests"
+    )
+
+
+ANALYTICS_START = "<!-- analytics:start -->"
+ANALYTICS_END = "<!-- analytics:end -->"
+
+
+def analytics_block():
+    if not ANALYTICS_ON:
+        return ""
+    return (
+        f"{ANALYTICS_START}\n"
+        f'<script defer src="{UMAMI_SCRIPT}" '
+        f'data-website-id="{html.escape(UMAMI_WEBSITE_ID.strip(), quote=True)}"></script>\n'
+        f"{ANALYTICS_END}"
+    )
 
 
 def html_pages():
@@ -66,17 +108,48 @@ def og_image_for(rel):
     return BASE + DEFAULT_IMG
 
 
-def inject_security(src):
+def upsert_security(src):
+    """Ensure referrer meta exists and the CSP meta matches compute_csp()."""
+    csp = compute_csp()
+    changed = False
     if "Content-Security-Policy" in src:
-        return src, False
-    m = re.search(r'<meta charset="utf-8">', src)
-    if not m:
-        return src, False
-    block = (
-        f'<meta http-equiv="Content-Security-Policy" content="{CSP}">\n'
-        '<meta name="referrer" content="strict-origin-when-cross-origin">'
+        new = re.sub(
+            r'(<meta http-equiv="Content-Security-Policy" content=")[^"]*(">)',
+            lambda m: m.group(1) + csp + m.group(2),
+            src, count=1,
+        )
+        if new != src:
+            src, changed = new, True
+    else:
+        m = re.search(r'<meta charset="utf-8">', src)
+        if m:
+            block = (
+                f'<meta http-equiv="Content-Security-Policy" content="{csp}">\n'
+                '<meta name="referrer" content="strict-origin-when-cross-origin">'
+            )
+            src = src.replace(m.group(0), m.group(0) + "\n" + block, 1)
+            changed = True
+    return src, changed
+
+
+def upsert_analytics(src):
+    """Insert/replace/remove the Umami block to match ANALYTICS_ON."""
+    existing = re.search(
+        re.escape(ANALYTICS_START) + r".*?" + re.escape(ANALYTICS_END), src, re.S
     )
-    return src.replace(m.group(0), m.group(0) + "\n" + block, 1), True
+    block = analytics_block()
+    if existing:
+        if block:
+            if existing.group(0) != block:
+                return src[:existing.start()] + block + src[existing.end():], True
+            return src, False
+        # analytics turned off -> strip the block (and a trailing newline)
+        new = src[:existing.start()] + src[existing.end():]
+        new = new.replace("\n\n</head>", "\n</head>")
+        return new, True
+    if block:
+        return src.replace("</head>", block + "\n</head>", 1), True
+    return src, False
 
 
 def inject_seo(rel, src):
@@ -115,8 +188,9 @@ def write_sitemap(pages):
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
     ]
+    n = 0
     for rel in pages:
-        if rel in NO_INDEX:
+        if rel in NO_INDEX or rel in EXCLUDE:
             continue
         pr = priority.get(rel, "0.8" if rel.startswith("collection/") else
                           "0.7" if rel.startswith("journal/") else "0.5")
@@ -129,30 +203,39 @@ def write_sitemap(pages):
             f"    <priority>{pr}</priority>",
             "  </url>",
         ]
+        n += 1
     out.append("</urlset>")
     with open("sitemap.xml", "w", encoding="utf-8") as fh:
         fh.write("\n".join(out) + "\n")
+    return n
 
 
 def main():
     if not os.path.exists("index.html"):
         raise SystemExit("Run this from the repository root (index.html not found).")
     pages = html_pages()
-    seo_n = sec_n = 0
+    seo_n = sec_n = an_n = 0
     for rel in pages:
+        if rel in EXCLUDE:
+            continue
         src = open(rel, encoding="utf-8").read()
-        src, s1 = inject_security(src)
+        src, s1 = upsert_security(src)
+        src, s3 = upsert_analytics(src)
         if rel not in NO_INDEX:
             src, s2 = inject_seo(rel, src)
         else:
             s2 = False
-        if s1 or s2:
+        if s1 or s2 or s3:
             open(rel, "w", encoding="utf-8").write(src)
         seo_n += int(s2)
         sec_n += int(s1)
-    write_sitemap(pages)
-    print(f"SEO tags added to {seo_n} page(s); CSP/referrer added to {sec_n} page(s).")
-    print(f"sitemap.xml rebuilt with {sum(1 for p in pages if p not in NO_INDEX)} URLs.")
+        an_n += int(s3)
+    n = write_sitemap(pages)
+    state = "ON (" + UMAMI_WEBSITE_ID.strip() + ")" if ANALYTICS_ON else "OFF"
+    print(f"Analytics: {state}")
+    print(f"SEO tags added to {seo_n} page(s); CSP updated on {sec_n} page(s); "
+          f"analytics tag changed on {an_n} page(s).")
+    print(f"sitemap.xml rebuilt with {n} URLs.")
 
 
 if __name__ == "__main__":

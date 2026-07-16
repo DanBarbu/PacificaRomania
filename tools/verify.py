@@ -60,13 +60,15 @@ def check_page(rel):
     for m in re.finditer(r"<[a-z0-9]+<span|content=\"<span", src):
         errors.append(f"{rel}: malformed tag near {m.group(0)!r}")
 
-    # required head tags
+    # required head tags. Pages that opt out of indexing (404, admin hub) only
+    # need the CSP meta — canonical/OG are irrelevant for them.
+    noindex = 'name="robots" content="noindex' in src or rel == "404.html"
     for needle, label in (
         ('rel="canonical"', "canonical link"),
         ("og:title", "Open Graph tags"),
         ("Content-Security-Policy", "CSP meta"),
     ):
-        if rel == "404.html" and needle != "Content-Security-Policy":
+        if noindex and needle != "Content-Security-Policy":
             continue
         if needle not in src:
             warnings.append(f"{rel}: missing {label}")

@@ -2,5 +2,6 @@
 User-agent: *
 Allow: /
 Disallow: /assets/pdf/
+Disallow: /admin.html
 
 Sitemap: https://pacificaromania.space/sitemap.xml
