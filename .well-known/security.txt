@@ -1,0 +1,6 @@
+# Security contact for pacificaromania.space
+# https://securitytxt.org/
+Contact: mailto:danbarbu22@gmail.com
+Preferred-Languages: en, ro
+Canonical: https://pacificaromania.space/.well-known/security.txt
+Expires: 2027-07-16T00:00:00.000Z

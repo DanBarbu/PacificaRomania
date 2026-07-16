@@ -1,0 +1,6 @@
+# PacificaRomania — https://pacificaromania.space
+User-agent: *
+Allow: /
+Disallow: /assets/pdf/
+
+Sitemap: https://pacificaromania.space/sitemap.xml
