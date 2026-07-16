@@ -22,7 +22,7 @@ consequential, confirm with a qualified adviser.
 | Records of processing (Art. 30) | ☐ **keep a short internal record** (what data, why, retention) — template below |
 | Breach procedure (Art. 33/34, notify ANSPDCP within 72h) | ☐ **know the steps** (see §7) |
 | DPO | Not required at this scale (no large-scale/special-category monitoring) |
-| Name/address of controller in the notice | ☐ **fill the `[insert legal name and postal address]` placeholder** in `privacy.html` and `legal.html` |
+| Name/address of controller in the notice | ✅ AlgorithmIntelligence SRL, Bucharest — set in `privacy.html` and `legal.html` |
 
 ## 2. ePrivacy Directive 2002/58/EC (+ Romanian Law 506/2004) — "cookie law"
 
@@ -97,8 +97,8 @@ banking, transport, e-books). A non-commercial cultural site is most likely
 
 ## Your operational to-do (the ☐ items, condensed)
 
-1. **Fill the controller identity** — replace `[insert legal name and postal
-   address]` in `privacy.html` **and** `legal.html`.
+1. **Controller identity** — ✅ done (AlgorithmIntelligence SRL, Casa14,
+   14–18 Prevederii St, Sector 3, Bucharest). Update if it ever changes.
 2. **Host Matomo in the EU**, enable IP anonymisation + 14-month log deletion +
    Do-Not-Track (see `docs/analytics-setup.md` §3).
 3. **Add the security headers** (§6) on the Matomo subdomain; strong admin
@@ -113,7 +113,7 @@ banking, transport, e-books). A non-commercial cultural site is most likely
 
 ### Record of Processing (Art. 30) — minimal template
 ```
-Controller: <name>, <address>, danbarbu22@gmail.com
+Controller: AlgorithmIntelligence SRL, Casa14, 14-18 Prevederii St, Sector 3, Bucharest, Romania, danbarbu22@gmail.com
 Processing 1: Website audience analytics
   Data: pages, referrer, anonymised IP, approx. country/region, device
   Purpose: understand traffic · Legal basis: consent
