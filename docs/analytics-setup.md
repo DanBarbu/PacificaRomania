@@ -1,107 +1,111 @@
-# Traffic analytics setup — Umami on `stats.pacificaromania.space`
+# Traffic analytics setup — Matomo (self-hosted, consent-gated)
 
-This site uses **Umami** (free, open-source, GitHub:
-[umami-software/umami](https://github.com/umami-software/umami)) for traffic
-analytics: visitor counts, **countries/regions**, referrers, real-time activity,
-and **ad-campaign (UTM)** tracking — a privacy-friendly, cookieless alternative
-to Google Analytics. No consent banner is required because Umami stores no
-personal data and no raw IP addresses.
+This site uses **Matomo** (free, open-source, GitHub:
+[matomo-org/matomo](https://github.com/matomo-org/matomo)) — the closest
+self-hosted equivalent of Google Analytics. It gives a per-visit log with
+**IP-based geolocation (country/region/city)**, referrers, real-time visitors,
+and **ad-campaign (UTM) reports**.
 
-The tracking snippet and the Content-Security-Policy are managed by
-`tools/build_seo.py`. Analytics is **OFF until you paste a Website ID** — the
-steps below turn it on.
+Because Matomo processes individual IP addresses, EU law (GDPR + ePrivacy)
+requires **opt-in consent**. The site already ships a compliant consent banner
+(`assets/js/analytics.js`) that loads Matomo **only after the visitor accepts**,
+treats Do-Not-Track as a refusal, and lets the visitor withdraw consent. The
+tracking tag and the Content-Security-Policy are managed by `tools/build_seo.py`
+and stay **OFF until you paste a Site ID**.
+
+> Matomo the software is free. Hosting needs a PHP + MySQL server. To keep it
+> genuinely free, use an always-free VM (below). Host it **in the EU** to keep
+> data-protection simple.
 
 ---
 
-## 1. Deploy Umami (free)
+## 1. Deploy Matomo (free, EU-hosted)
 
-Umami is a Node app that needs a PostgreSQL (or MySQL) database. Two free paths:
+**Recommended free path — Oracle Cloud "Always Free" VM + Docker**
+1. Create an [Oracle Cloud Always Free](https://www.oracle.com/cloud/free/) VM
+   in an **EU region** (e.g. Frankfurt). The Ampere/AMD micro instances are free
+   for life.
+2. Install Docker, then run Matomo + MariaDB (official images):
+   ```bash
+   docker network create matomo
+   docker run -d --name db --network matomo -e MARIADB_DATABASE=matomo \
+     -e MARIADB_USER=matomo -e MARIADB_PASSWORD=CHANGE_ME \
+     -e MARIADB_ROOT_PASSWORD=CHANGE_ME_ROOT -v db:/var/lib/mysql mariadb:11
+   docker run -d --name matomo --network matomo -p 80:80 \
+     -v matomo:/var/www/html matomo:latest
+   ```
+3. Put a TLS reverse proxy in front (Caddy or nginx) so it serves HTTPS.
 
-**A. Vercel + free Postgres (recommended, no server to manage)**
-1. Create a free Postgres database — e.g. [Neon](https://neon.tech) or
-   [Supabase](https://supabase.com) — and copy its connection string.
-2. Fork `umami-software/umami`, then "Import Project" into
-   [Vercel](https://vercel.com) (free Hobby plan).
-3. Set env vars in Vercel:
-   - `DATABASE_URL` = your Postgres connection string
-   - `APP_SECRET` = any long random string
-4. Deploy. Umami is now live at a `*.vercel.app` URL.
-
-**B. Render / Fly.io / Railway** — each has a free or near-free tier and a
-one-click Umami/Docker deploy. Same two env vars.
-
-Default login after first deploy: user `admin`, password `umami` — **change the
-password immediately**.
+Alternatives: any low-cost EU VPS (Hetzner ~€4/mo), or a PaaS that offers
+PHP + MySQL. Avoid free PHP hosts that forbid analytics/cron.
 
 ## 2. Point the subdomain at it
 
-So the dashboard lives on your own domain:
+1. In your DNS (Namecheap, `pacificaromania.space`) add an **A record**:
+   - Host `stats` → your VM's public IP  (or a CNAME to your proxy host)
+2. Issue a TLS certificate for `stats.pacificaromania.space` (Caddy does this
+   automatically; or use certbot).
+3. Confirm `https://stats.pacificaromania.space` shows Matomo.
 
-1. In your DNS (Namecheap, for `pacificaromania.space`) add a **CNAME**:
-   - Host: `stats`
-   - Target: your Vercel/Render host (e.g. `cname.vercel-dns.com` or the host
-     your provider gives you)
-2. In the host's dashboard, add `stats.pacificaromania.space` as a custom
-   domain and let it issue the TLS certificate.
-3. Confirm `https://stats.pacificaromania.space` loads the Umami login.
+## 3. Install + privacy configuration (required for EU compliance)
 
-> The main site stays on GitHub Pages (apex + `www`). Only this one subdomain
-> points at the analytics host.
+1. Finish the Matomo web installer; add website `pacificaromania.space`.
+2. **Administration → Privacy → Anonymize data**:
+   - Anonymize visitors' IP: **at least 2 bytes** (country/region geolocation
+     still works; this reduces the data-protection footprint).
+   - Enable **"also anonymise before geolocation"** only if city-level is not
+     needed. For country-by-user, 2-byte anonymisation keeps country accurate.
+   - Enable **support for Do Not Track**.
+3. **Privacy → Anonymize/Delete old visitor logs**: schedule deletion of raw
+   logs after **14 months** (matches the Privacy Policy).
+4. **Geolocation**: install the free DB-IP / GeoLite2 database so country/region
+   is resolved.
+5. Change the default `admin` password.
 
-## 3. Create the website + copy the ID
+> Consent is handled client-side by this site (`requireConsent`), so Matomo will
+> not track or set cookies until the visitor clicks **Accept**.
 
-1. Log into `https://stats.pacificaromania.space`.
-2. **Settings → Websites → Add website**: name `PacificaRomania`, domain
-   `pacificaromania.space`.
-3. Open it and copy the **Website ID** (a UUID).
+## 4. Copy the Site ID and switch analytics ON
 
-## 4. Switch analytics ON in the repo
-
-1. Edit `tools/build_seo.py` and set:
+1. In Matomo, the website's **Site ID** is a number (e.g. `1`).
+2. Edit `tools/build_seo.py`:
    ```python
-   UMAMI_WEBSITE_ID = "paste-the-uuid-here"
+   MATOMO_URL     = "https://stats.pacificaromania.space/"   # keep the slash
+   MATOMO_SITE_ID = "1"                                       # your Site ID
    ```
-2. From the repo root run:
+3. From the repo root:
    ```bash
-   python3 tools/build_seo.py   # injects the tracker + widens CSP for stats.*
-   python3 tools/verify.py      # sanity check
-   git add -A && git commit -m "Enable Umami analytics" && git push origin main
+   python3 tools/build_seo.py    # injects the consent-gated tag + widens CSP
+   python3 tools/verify.py       # sanity check
+   git add -A && git commit -m "Enable Matomo analytics" && git push origin main
    ```
-3. Visit the site, then check the Umami dashboard — you should see live traffic.
+4. Visit the site → the consent banner appears; after **Accept**, live visits
+   show up in Matomo.
 
-To turn analytics **off** again, blank out `UMAMI_WEBSITE_ID`, rerun
-`build_seo.py` (it strips the tag and re-tightens the CSP), and push.
+To turn analytics **off**: blank `MATOMO_SITE_ID`, rerun `build_seo.py` (removes
+the tag, re-tightens the CSP, drops the banner), and push.
 
 ---
 
 ## Ad campaigns (UTM)
 
-Tag every ad/campaign link so Umami's **Campaigns** report can attribute
-traffic. Use the builder at **`/admin.html`** (Ad-campaign link builder), or add
-params by hand:
+Tag every ad link so Matomo's **Acquisition → Campaigns** report attributes it.
+Build links with the UTM builder on **`/admin.html`**, or by hand:
 
 ```
 https://pacificaromania.space/?utm_source=facebook&utm_medium=cpc&utm_campaign=spring_exhibition
 ```
 
-Conventions (keep lowercase and consistent):
-- `utm_source` — where the ad runs: `facebook`, `instagram`, `newsletter`
-- `utm_medium` — type: `cpc`, `social`, `email`, `banner`
-- `utm_campaign` — the campaign name: `spring_exhibition`
-- `utm_content` / `utm_term` — optional (ad variant / paid keyword)
+Matomo reads the standard `utm_*` parameters out of the box (lowercase, keep
+`source`/`medium`/`campaign` consistent).
 
-## The admin hub — `/admin.html`
+## Why Matomo (vs. the alternatives)
 
-A small monitoring hub on your own domain: a button to the Umami dashboard plus
-the UTM link builder. It is `noindex` and disallowed in `robots.txt`, but note
-it is still a **public** URL (GitHub Pages has no login) — keep no secrets on it.
+| Tool | Per-visitor IP→geo | Free hosting | EU-consent needed |
+|------|:---:|:---:|:---:|
+| **Matomo** (chosen) | ✅ country/region/city | self-host (free VM) | yes — handled by our banner |
+| Umami | country only, IP hashed | free tier | no (cookieless) |
+| Cloudflare Web Analytics | aggregate only | ✅ | no |
+| Plausible / GoatCounter | aggregate/country | self-host / free tier | no |
 
-## Alternatives considered (all free / open-source)
-
-| Tool | Note |
-|------|------|
-| **Umami** (chosen) | Cookieless, country + campaigns, self-host free, clean dashboard |
-| Matomo | Full GA replacement with per-visitor IP→city log; needs PHP+MySQL and a GDPR consent banner |
-| Cloudflare Web Analytics | Zero-setup, aggregate only, no per-user detail |
-| GoatCounter | Minimal, free hosted, country + campaigns |
-| PostHog | Free cloud tier, per-visitor geo + session replay, heavier |
+See `docs/eu-compliance.md` for the full legal checklist.

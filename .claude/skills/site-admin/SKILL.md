@@ -32,11 +32,14 @@ robots.txt  sitemap.xml    # SEO — sitemap is generated, do not hand-edit
 collection/                # region galleries: australia, melanesia, micronesia,
                            #   polynesia, island-southeast-asia (.html)
 journal/                   # one .html per curatorial essay
+privacy.html  legal.html   # bilingual GDPR/ePrivacy + Impressum/Terms pages
 admin.html                 # private (noindex) admin hub: analytics + UTM builder
-docs/analytics-setup.md    # how to deploy Umami analytics + enable it
+docs/analytics-setup.md    # how to deploy Matomo analytics + enable it
+docs/eu-compliance.md      # EU legal checklist (GDPR/ePrivacy/DSA/NIS2/EAA)
 assets/css/style.css       # the ONE shared stylesheet
 assets/js/main.js          # nav toggle
 assets/js/i18n.js          # EN/RO language switch
+assets/js/analytics.js     # consent banner + consent-gated Matomo loader
 assets/js/lightbox.js      # click-to-zoom on essay images
 assets/images/{australia,melanesia,micronesia,polynesia}/  # catalogue photos
 assets/images/folio/       # essay lead images + journal thumbnails
@@ -159,29 +162,35 @@ is done in-page and by hygiene:
 - **Dependencies**: there is no JS supply chain here (all first-party vanilla
   JS) — keep it that way; it is the site's strongest security property.
 
-## Analytics & ad campaigns
+## Analytics, consent & ad campaigns
 
-Traffic analytics use **Umami** (free, open-source, cookieless), self-hosted on
-`stats.pacificaromania.space`, with a small admin hub at `/admin.html`. Full
-step-by-step (deploy, DNS, enable) lives in **`docs/analytics-setup.md`**.
+Traffic analytics use **Matomo** (free, open-source), self-hosted on
+`stats.pacificaromania.space`, loaded **only after opt-in consent** because it
+logs individual IPs. Admin hub at `/admin.html`. Deploy/DNS/enable steps are in
+**`docs/analytics-setup.md`**; the EU legal checklist is in
+**`docs/eu-compliance.md`**.
 
-- **On/off is one variable**: `UMAMI_WEBSITE_ID` in `tools/build_seo.py`. Empty
-  = analytics OFF and CSP stays tight (the default committed state). Paste the
-  Website ID and rerun `build_seo.py` to inject the tracker on every content
-  page and widen the CSP to allow `https://stats.pacificaromania.space` (only
-  in `script-src` and `connect-src`). Blank it out + rerun to fully remove.
-- **Never hand-edit** the analytics tag or the CSP in the HTML — `build_seo.py`
-  owns both and will overwrite them. Change the config constants instead.
-- **`admin.html`** is the monitoring hub: a link to the Umami dashboard plus a
-  client-side UTM campaign-link builder. It is `noindex`, disallowed in
-  `robots.txt`, and **excluded from `build_seo.py`** (hand-maintained head). It
-  is still a public URL — keep no secrets on it.
+- **On/off is one variable**: `MATOMO_SITE_ID` in `tools/build_seo.py`. Empty =
+  analytics OFF, CSP tight, no consent banner (the default committed state).
+  Paste the numeric Site ID and rerun `build_seo.py` to inject the consent-gated
+  loader on every content page and widen the CSP to allow the Matomo host in
+  `script-src`, `img-src`, and `connect-src`. Blank it + rerun to fully remove.
+- **Consent is mandatory** (GDPR + ePrivacy): `assets/js/analytics.js` shows a
+  bilingual banner, loads Matomo only on "Accept", treats Do-Not-Track as a
+  refusal, and exposes a persistent "Cookie settings" control. Don't bypass it.
+- **Never hand-edit** the analytics tag, the CSP, or the footer legal links in
+  the HTML — `build_seo.py` owns all three (marker comments `analytics:*`,
+  `legal:*`) and will overwrite them. Change the config constants instead.
+- **Legal pages**: `privacy.html` (Privacy & Cookie Policy) and `legal.html`
+  (Legal Notice/Impressum + Terms), bilingual, linked in every footer. If you
+  add data collection, update `privacy.html`. The `[insert legal name…]`
+  placeholders in both must be filled by the operator.
+- **`admin.html`** is the monitoring hub (Matomo dashboard link + UTM builder).
+  `noindex`, robots-disallowed, and **excluded from `build_seo.py`**
+  (hand-maintained head). Still a public URL — keep no secrets on it.
 - **Ad campaigns**: tag links with `utm_source/medium/campaign` (lowercase,
-  consistent) so Umami's Campaigns report attributes them; use the builder on
+  consistent) so Matomo's Campaigns report attributes them; use the builder on
   `admin.html`.
-- **Privacy**: Umami stores no cookies/raw IPs, so no consent banner is needed.
-  If you ever swap in a per-visitor-IP tool (Matomo full-IP, PostHog), add a
-  GDPR consent notice and reassess the CSP.
 
 ## Verify & deploy
 

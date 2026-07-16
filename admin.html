@@ -53,17 +53,18 @@
   <section class="admin-card">
     <h2>Traffic analytics dashboard</h2>
     <p class="admin-note">
-      Visitor counts, countries/regions, referrers, real-time activity and
-      ad-campaign performance. Hosted on your own subdomain (Umami). Login is
-      required — only you see the data.
+      Visitor log with country/region geolocation, referrers, real-time activity
+      and ad-campaign performance. Self-hosted Matomo on your own subdomain,
+      loaded only after visitor consent. Login is required — only you see the data.
     </p>
     <p style="margin:1rem 0 0">
       <a class="admin-btn" href="https://stats.pacificaromania.space"
          target="_blank" rel="noopener noreferrer">Open analytics dashboard ↗</a>
     </p>
     <p class="admin-note" style="margin-top:.8rem">
-      Not set up yet? Follow <code>docs/analytics-setup.md</code> in the repo,
-      then paste the Website ID into <code>tools/build_seo.py</code> and run it.
+      Not set up yet? Follow <code>docs/analytics-setup.md</code>, then paste the
+      Matomo Site ID into <code>tools/build_seo.py</code> and run it. EU
+      compliance steps are in <code>docs/eu-compliance.md</code>.
     </p>
   </section>
 
@@ -113,13 +114,13 @@
       reports stay clean: <code>utm_source</code> = where (facebook),
       <code>utm_medium</code> = type (social / cpc / email),
       <code>utm_campaign</code> = the campaign name.</p>
-      <p><strong>Privacy / GDPR</strong> — Umami is cookieless and does not store
-      personal data or raw IPs, so no consent banner is required. If you later
-      switch to a tool that logs individual IPs (e.g. Matomo full-IP), add a
-      consent notice.</p>
-      <p><strong>Turning analytics on</strong> — deploy Umami, create a website
-      for <code>pacificaromania.space</code>, copy its Website ID into
-      <code>UMAMI_WEBSITE_ID</code> in <code>tools/build_seo.py</code>, run
+      <p><strong>Privacy / GDPR</strong> — Matomo logs individual IPs, so it runs
+      only after opt-in consent (the banner). Keep IP anonymisation and log
+      deletion enabled in Matomo, and host it in the EU. Full checklist:
+      <code>docs/eu-compliance.md</code>.</p>
+      <p><strong>Turning analytics on</strong> — deploy Matomo, add the website
+      for <code>pacificaromania.space</code>, copy its numeric Site ID into
+      <code>MATOMO_SITE_ID</code> in <code>tools/build_seo.py</code>, run
       <code>python3 tools/build_seo.py</code>, then commit &amp; push.</p>
     </div>
   </section>
