@@ -186,6 +186,10 @@ Google Search Console, Bing Webmaster Tools, Wikidata.
    `build_seo.py` that produces both the visible block and the `FAQPage`
    JSON-LD (validated, 6 questions). Region intros already supply the
    definitional openers; operator facts already sitewide (footer/legal/FAQ).
-3. Phase 3 (Wikidata + webmaster registrations) — needs **your** accounts;
-   step-by-step guide provided when you're ready.
+3. Phase 3 (Wikidata + webmaster registrations) — needs **your** accounts.
+   **PREPARED:** ready-to-use kit in **`docs/phase3-external.md`** (a
+   fill-in-the-blanks Wikidata item with confident Q-ids, plus Google Search
+   Console and Bing steps). The site-side hook is wired: paste a token into
+   `GSC_VERIFICATION` / `BING_VERIFICATION` in `tools/build_seo.py`, rerun it,
+   and the verification `<meta>` is injected on the homepage (off until set).
 4. Routine (§7) starts the month after Phases 1–2 ship.

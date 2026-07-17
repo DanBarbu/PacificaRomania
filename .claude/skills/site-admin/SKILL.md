@@ -181,7 +181,7 @@ logs individual IPs. Admin hub at `/admin.html`. Deploy/DNS/enable steps are in
 - **Never hand-edit** the analytics tag, the CSP, the footer legal links, the
   JSON-LD structured-data blocks, or the About-page FAQ in the HTML —
   `build_seo.py` owns them all (marker comments `analytics:*`, `legal:*`,
-  `jsonld:*`, `faq:*`) and will overwrite them. The FAQ's visible block and its
+  `jsonld:*`, `faq:*`, `verify:*`) and will overwrite them. The FAQ's visible block and its
   FAQPage schema are both generated from the single `FAQ` list in
   `build_seo.py` — edit the copy there. Change the config constants / generator
   functions instead. The tool

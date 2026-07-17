@@ -48,6 +48,13 @@ MATOMO_ORIGIN = MATOMO_URL.rstrip("/")
 MATOMO_SITE_ID = ""   # e.g. "1" — empty = analytics disabled (safe default)
 ANALYTICS_ON = bool(MATOMO_SITE_ID.strip())
 
+# ---- Search-engine verification (AI visibility Phase 3) ----------------------
+# Paste the HTML-tag token from Google Search Console (URL-prefix property) and
+# Bing Webmaster Tools, then rerun this tool. Empty = no tag injected. The tag
+# goes on the homepage only. See docs/phase3-external.md.
+GSC_VERIFICATION = ""   # google-site-verification content value
+BING_VERIFICATION = ""  # msvalidate.01 content value
+
 # Pages never tracked / never indexed / never SEO-tagged.
 EXCLUDE = {"admin.html"}          # hand-maintained admin hub (noindex)
 NO_INDEX = {"404.html"}           # kept out of the sitemap only
@@ -195,6 +202,44 @@ PERSONS = [
         ],
     },
 ]
+
+VERIFY_START = "<!-- verify:start -->"
+VERIFY_END = "<!-- verify:end -->"
+
+
+def verification_block():
+    metas = []
+    if GSC_VERIFICATION.strip():
+        metas.append('<meta name="google-site-verification" content="'
+                     + html.escape(GSC_VERIFICATION.strip(), quote=True) + '">')
+    if BING_VERIFICATION.strip():
+        metas.append('<meta name="msvalidate.01" content="'
+                     + html.escape(BING_VERIFICATION.strip(), quote=True) + '">')
+    if not metas:
+        return ""
+    return VERIFY_START + "\n" + "\n".join(metas) + "\n" + VERIFY_END
+
+
+def upsert_verification(src, rel):
+    """Search-engine verification meta tags — homepage only, off until set."""
+    if rel != "index.html":
+        return src, False
+    block = verification_block()
+    existing = re.search(
+        re.escape(VERIFY_START) + r".*?" + re.escape(VERIFY_END), src, re.S
+    )
+    if existing:
+        if block:
+            if existing.group(0) != block:
+                return src[:existing.start()] + block + src[existing.end():], True
+            return src, False
+        new = src[:existing.start()] + src[existing.end():]
+        new = new.replace('\n\n<link rel="stylesheet"', '\n<link rel="stylesheet"')
+        return new, True
+    if block:
+        return src.replace('<link rel="stylesheet"', block + '\n<link rel="stylesheet"', 1), True
+    return src, False
+
 
 # FAQ — single source of truth for the visible block (About page) AND the
 # FAQPage JSON-LD. Answers are plain text (no markup): safe in JSON and HTML.
@@ -617,12 +662,13 @@ def main():
         src, s3 = upsert_analytics(src, prefix)
         src, s4 = upsert_legal_links(src, prefix)
         src, s6 = upsert_faq(src, rel)
+        src, s7 = upsert_verification(src, rel)
         src, s5 = upsert_jsonld(src, rel)
         if rel not in NO_INDEX:
             src, s2 = inject_seo(rel, src)
         else:
             s2 = False
-        if s1 or s2 or s3 or s4 or s5 or s6:
+        if s1 or s2 or s3 or s4 or s5 or s6 or s7:
             open(rel, "w", encoding="utf-8").write(src)
         seo_n += int(s2)
         sec_n += int(s1)
