@@ -8,6 +8,7 @@
     overlay.className = "lightbox-overlay";
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
+    overlay.setAttribute("aria-label", "Image viewer / Vizualizare imagine");
     var close = document.createElement("button");
     close.className = "lightbox-close";
     close.setAttribute("aria-label", "Close / Închide");
