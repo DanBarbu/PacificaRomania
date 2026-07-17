@@ -71,6 +71,7 @@ ESSAY_IMG = {
     "naga-morsarang": "naga-morsarang.jpg",
     "asaro-mudmen": "asaro-spirit-head.jpg",
     "raja-bomoh": "raja-bomoh.jpg",
+    "tiger-in-chains": "mah-meri-masks.jpg",
 }
 
 

@@ -433,3 +433,11 @@ section{padding:76px 0}
 .faq-item:last-child{border-bottom:1px solid var(--line)}
 .faq-item h3{font-size:1.12rem; margin:0 0 8px; color:var(--ocean)}
 .faq-item p{margin:0; color:#4a463f; line-height:1.6}
+
+/* ---------- Essay byline & notes ---------- */
+.essay-byline{font-family:var(--sans); font-size:0.82rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--ochre); margin:14px 0 0}
+.essay-notes{margin:2.6rem 0 0; padding-top:1.4rem; border-top:1px solid var(--line)}
+.essay-notes h3{font-family:var(--sans); font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ochre); margin:0 0 12px}
+.essay-notes ol{margin:0; padding-left:1.3rem}
+.essay-notes li{font-size:0.86rem; line-height:1.55; color:#5a5346; margin-bottom:9px}
+.essay-notes a{color:var(--ochre)}
