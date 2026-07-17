@@ -1,0 +1,34 @@
+# PacificaRomania
+
+> PacificaRomania is a cultural art collection of over 150 works of Pacific and Island Southeast Asian art — painted Dreamings, war canoes, carved ancestors, and sacred vessels — first exhibited at the Embassy of Romania in Canberra (2019–2020) and read through the comparative history of religion of Mircea Eliade and the sculptural cosmology of Constantin Brâncuși.
+
+Operated by AlgorithmIntelligence SRL, Bucharest, Romania. Contact: danbarbu22@gmail.com. All pages are bilingual (English and Romanian, both languages present in the same HTML).
+
+## Collection
+
+- [Collection](https://pacificaromania.space/collection.html): Over 150 works of Pacific and Island Southeast Asian art, first exhibited at the Embassy of Romania in Canberra (2019–2020). Browse by region: Australia, Melanesia, Micronesia, Polynesia, and Island Southeast Asia.
+- [Australia](https://pacificaromania.space/collection/australia.html): Australia: Dreaming, Desert Law & the Longest Living Tradition. Objects from the PacificaRomania collection.
+- [Island Southeast Asia](https://pacificaromania.space/collection/island-southeast-asia.html): Dayak baby carriers, Batak medicine vessels, Burmese weights, and the shamanic masks of the Malaysian Orang Asli.
+- [Melanesia](https://pacificaromania.space/collection/melanesia.html): Melanesia: The Great Engine of Ritual Invention. Objects from the PacificaRomania collection.
+- [Micronesia](https://pacificaromania.space/collection/micronesia.html): Micronesia: A Cartographic Metaphysics of the Atoll. Objects from the PacificaRomania collection.
+- [Polynesia](https://pacificaromania.space/collection/polynesia.html): Polynesia: Art as Genealogical Inscription. Objects from the PacificaRomania collection.
+
+## Journal (curatorial essays)
+
+- [Journal](https://pacificaromania.space/journal.html): Curatorial essays from the PacificaRomania collection, connecting Pacific and Southeast Asian art to Mircea Eliade's comparative history of religion.
+- [Aboriginal Birds in Space](https://pacificaromania.space/journal/aboriginal-birds-in-space.html): A preface to the installation: Seven Sisters Dreaming, Arnhem Land poles, and Brâncuși's ascent.
+- [The “Picasso of the Pacific”](https://pacificaromania.space/journal/aloi-pilioko.html): Aloï Pilioko in the PacificaRomania collection.
+- [Living Ancestors](https://pacificaromania.space/journal/asaro-mudmen.html): The Asaro Mudmen legend and the Eastern Highlands spirit mask.
+- [Dreaming the Sacred: Eliade & the Masks of Malaysia](https://pacificaromania.space/journal/eliade-and-the-masks-of-malaysia.html): How Mah Meri ritual shaped a Romanian historian of religion.
+- [Moyang Siamang — The Primate Ancestor Spirit](https://pacificaromania.space/journal/moyang-siamang.html): A carved cosmology at the edge of three worlds: the sacred primate through Orang Asli, Chinese, and Indian eyes.
+- [The Power of the Vessel](https://pacificaromania.space/journal/naga-morsarang.html): Batak medicine containers, from empty horn to complete cosmogram.
+- [The Spirit of the Tomoko](https://pacificaromania.space/journal/nguzu-nguzu-and-the-tomoko.html): Maritime ritual and cultural resilience in the Solomon Islands.
+- [The Raja Bomoh and the Great Bird](https://pacificaromania.space/journal/raja-bomoh.html): A Malay shaman, a missing aeroplane, and a contemporary sculpture that deifies the bomoh.
+- [The Sacralization of Measure](https://pacificaromania.space/journal/the-sacralization-of-measure.html): Burmese weights in the PacificaRomania collection.
+- [Spiritual Armor: The Sacred Papot](https://pacificaromania.space/journal/the-sacred-papot.html): Dayak baby carriers as portable sacred centres.
+
+## About
+
+- [About](https://pacificaromania.space/about.html): PacificaRomania is a private collection and curatorial project reading Pacific and Southeast Asian art through the comparative lens of Mircea Eliade and Constantin Brâncuși.
+- [Contact](https://pacificaromania.space/contact.html): Get in touch with the PacificaRomania collection.
+- [PacificaRomania — A Cultural Art Collection Between Romania and the Pacific](https://pacificaromania.space/): PacificaRomania is a cultural art collection exploring the living cosmologies of Aboriginal Australia, Melanesia, Micronesia, Polynesia and Island Southeast Asia, read through the comparative lens of Mircea Eliade and Constantin Brâncuși.

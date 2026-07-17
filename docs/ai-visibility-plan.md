@@ -173,6 +173,12 @@ Google Search Console, Bing Webmaster Tools, Wikidata.
 ## 9. Execution order (recommended)
 
 1. Phase 1 (robots policy, JSON-LD expansion, llms.txt) — one session.
+   **✅ SHIPPED 2026-07-17:** explicit AI-crawler allow-list in robots.txt;
+   JSON-LD on 20 pages (WebSite+Organization with sameAs, Article on all 10
+   essays, CollectionPage on regions, Blog on the journal index,
+   About/ContactPage, BreadcrumbList everywhere; Eliade Q41590 and Brâncuși
+   Q153048 entity anchors) — all generated and owned by `tools/build_seo.py`;
+   `llms.txt` auto-generated from the live page list on every build.
 2. Phase 2 (FAQ + FAQPage schema) — one session, copy drafted for approval
    like the regional intros were.
 3. Phase 3 (Wikidata + webmaster registrations) — needs **your** accounts;

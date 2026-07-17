@@ -1,4 +1,49 @@
 # PacificaRomania — https://pacificaromania.space
+# Policy: as a cultural-diplomacy collection, we WANT to be read, indexed and
+# cited by AI assistants and search engines. AI crawlers are explicitly
+# welcome. Reviewed as part of the monthly routine in docs/ai-visibility-plan.md.
+
+# --- AI search / citation crawlers ---
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# --- everyone else ---
 User-agent: *
 Allow: /
 Disallow: /assets/pdf/

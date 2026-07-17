@@ -88,7 +88,7 @@ def main():
         check_page(rel)
 
     # referenced files that should exist
-    for f in ("sitemap.xml", "robots.txt", ".well-known/security.txt"):
+    for f in ("sitemap.xml", "robots.txt", "llms.txt", ".well-known/security.txt"):
         if not os.path.exists(f):
             warnings.append(f"missing site file: {f}")
 

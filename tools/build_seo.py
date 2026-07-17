@@ -28,6 +28,7 @@ loads from the stats subdomain. This is the safe default.
 import os
 import re
 import html
+import json
 import datetime
 
 BASE = "https://pacificaromania.space/"
@@ -162,6 +163,204 @@ def upsert_analytics(src, prefix):
     return src, False
 
 
+# ---- Structured data (JSON-LD) -----------------------------------------------
+# Owned by this tool via the jsonld markers: never hand-edit the blocks in the
+# HTML. Entity anchors tie the site into knowledge graphs AI systems trust.
+FACEBOOK_URL = "https://www.facebook.com/profile.php?id=61574158391297"
+ORG_NAME = "PacificaRomania Collection"
+ORG = {
+    "@type": "Organization",
+    "@id": BASE + "#collection",
+    "name": ORG_NAME,
+    "url": BASE,
+    "logo": BASE + DEFAULT_IMG,
+    "email": "danbarbu22@gmail.com",
+    "sameAs": [FACEBOOK_URL],
+}
+PERSONS = [
+    {
+        "@type": "Person",
+        "name": "Mircea Eliade",
+        "sameAs": [
+            "https://www.wikidata.org/wiki/Q41590",
+            "https://en.wikipedia.org/wiki/Mircea_Eliade",
+        ],
+    },
+    {
+        "@type": "Person",
+        "name": "Constantin Brâncuși",
+        "sameAs": [
+            "https://www.wikidata.org/wiki/Q153048",
+            "https://en.wikipedia.org/wiki/Constantin_Br%C3%A2ncu%C8%99i",
+        ],
+    },
+]
+
+JSONLD_START = "<!-- jsonld:start -->"
+JSONLD_END = "<!-- jsonld:end -->"
+
+
+def page_title_desc(src):
+    mt = re.search(r"<title>(.*?)</title>", src, re.S)
+    md = re.search(r'<meta name="description" content="(.*?)">', src, re.S)
+    if not mt or not md:
+        return None, None
+    title = html.unescape(mt.group(1).strip())
+    # strip the site suffix ("… — PacificaRomania", "… — PacificaRomania Journal")
+    title = re.sub(r"\s+—\s+PacificaRomania.*$", "", title)
+    desc = html.unescape(md.group(1).strip())
+    return title, desc
+
+
+def breadcrumb_ld(rel, title):
+    items = [("Home", BASE)]
+    if rel.startswith("journal/"):
+        items.append(("Journal", BASE + "journal.html"))
+    elif rel.startswith("collection/"):
+        items.append(("Collection", BASE + "collection.html"))
+    items.append((title, canonical_for(rel)))
+    return {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "name": n, "item": u}
+            for i, (n, u) in enumerate(items)
+        ],
+    }
+
+
+def jsonld_for(rel, src):
+    """Return the page's JSON-LD graph (list of nodes), or None to skip."""
+    title, desc = page_title_desc(src)
+    if not title:
+        return None
+    canon = canonical_for(rel)
+
+    if rel == "index.html":
+        return [
+            {
+                "@type": "WebSite",
+                "@id": BASE + "#website",
+                "url": BASE,
+                "name": "PacificaRomania",
+                "description": desc,
+                "inLanguage": ["en", "ro"],
+                "publisher": {"@id": BASE + "#collection"},
+                "about": PERSONS,
+            },
+            ORG,
+        ]
+    if rel.startswith("journal/"):
+        return [
+            {
+                "@type": "Article",
+                "headline": title,
+                "description": desc,
+                "image": og_image_for(rel),
+                "url": canon,
+                "inLanguage": ["en", "ro"],
+                "author": {"@type": "Organization", "name": ORG_NAME, "url": BASE},
+                "publisher": {"@type": "Organization", "name": ORG_NAME,
+                              "url": BASE, "logo": {"@type": "ImageObject",
+                                                    "url": BASE + DEFAULT_IMG}},
+                "mentions": PERSONS,
+                "isPartOf": {"@id": BASE + "#website"},
+            },
+            breadcrumb_ld(rel, title),
+        ]
+    if rel.startswith("collection/") or rel == "collection.html":
+        return [
+            {
+                "@type": "CollectionPage",
+                "name": title,
+                "description": desc,
+                "url": canon,
+                "inLanguage": ["en", "ro"],
+                "isPartOf": {"@id": BASE + "#website"},
+            },
+            breadcrumb_ld(rel, title),
+        ]
+    if rel == "journal.html":
+        return [
+            {
+                "@type": "Blog",
+                "name": title,
+                "description": desc,
+                "url": canon,
+                "inLanguage": ["en", "ro"],
+                "publisher": {"@type": "Organization", "name": ORG_NAME, "url": BASE},
+            },
+            breadcrumb_ld(rel, title),
+        ]
+    if rel in ("about.html", "contact.html"):
+        typ = "AboutPage" if rel == "about.html" else "ContactPage"
+        node = {
+            "@type": typ,
+            "name": title,
+            "description": desc,
+            "url": canon,
+            "inLanguage": ["en", "ro"],
+            "isPartOf": {"@id": BASE + "#website"},
+        }
+        if rel == "about.html":
+            node["about"] = PERSONS
+        return [node, breadcrumb_ld(rel, title)]
+    return None  # privacy, legal, 404: skip
+
+
+def upsert_jsonld(src, rel):
+    graph = jsonld_for(rel, src)
+    if graph is None:
+        return src, False
+    payload = json.dumps({"@context": "https://schema.org", "@graph": graph},
+                         ensure_ascii=False, indent=1)
+    block = (f'{JSONLD_START}\n<script type="application/ld+json">\n'
+             f"{payload}\n</script>\n{JSONLD_END}")
+    existing = re.search(
+        re.escape(JSONLD_START) + r".*?" + re.escape(JSONLD_END), src, re.S
+    )
+    if existing:
+        if existing.group(0) != block:
+            return src[:existing.start()] + block + src[existing.end():], True
+        return src, False
+    return src.replace("</head>", block + "\n</head>", 1), True
+
+
+def write_llms(pages):
+    """Generate /llms.txt — a markdown index of the site for AI agents."""
+    out = [
+        "# PacificaRomania",
+        "",
+        "> PacificaRomania is a cultural art collection of over 150 works of "
+        "Pacific and Island Southeast Asian art — painted Dreamings, war canoes, "
+        "carved ancestors, and sacred vessels — first exhibited at the Embassy of "
+        "Romania in Canberra (2019–2020) and read through the comparative history "
+        "of religion of Mircea Eliade and the sculptural cosmology of Constantin "
+        "Brâncuși.",
+        "",
+        "Operated by AlgorithmIntelligence SRL, Bucharest, Romania. "
+        "Contact: danbarbu22@gmail.com. All pages are bilingual (English and "
+        "Romanian, both languages present in the same HTML).",
+        "",
+    ]
+    sections = [("Collection", lambda r: r.startswith("collection")),
+                ("Journal (curatorial essays)", lambda r: r.startswith("journal")),
+                ("About", lambda r: r in ("index.html", "about.html", "contact.html"))]
+    for label, match in sections:
+        out.append(f"## {label}")
+        out.append("")
+        for rel in pages:
+            if rel in NO_INDEX or rel in EXCLUDE or not match(rel):
+                continue
+            src = open(rel, encoding="utf-8").read()
+            title, desc = page_title_desc(src)
+            if not title:
+                continue
+            out.append(f"- [{title}]({canonical_for(rel)}): {desc}")
+        out.append("")
+    with open("llms.txt", "w", encoding="utf-8") as fh:
+        fh.write("\n".join(out))
+
+
 LEGAL_START = "<!-- legal:start -->"
 LEGAL_END = "<!-- legal:end -->"
 
@@ -271,7 +470,7 @@ def main():
     if not os.path.exists("index.html"):
         raise SystemExit("Run this from the repository root (index.html not found).")
     pages = html_pages()
-    seo_n = sec_n = an_n = leg_n = 0
+    seo_n = sec_n = an_n = leg_n = ld_n = 0
     for rel in pages:
         if rel in EXCLUDE:
             continue
@@ -280,22 +479,26 @@ def main():
         src, s1 = upsert_security(src)
         src, s3 = upsert_analytics(src, prefix)
         src, s4 = upsert_legal_links(src, prefix)
+        src, s5 = upsert_jsonld(src, rel)
         if rel not in NO_INDEX:
             src, s2 = inject_seo(rel, src)
         else:
             s2 = False
-        if s1 or s2 or s3 or s4:
+        if s1 or s2 or s3 or s4 or s5:
             open(rel, "w", encoding="utf-8").write(src)
         seo_n += int(s2)
         sec_n += int(s1)
         an_n += int(s3)
         leg_n += int(s4)
+        ld_n += int(s5)
     n = write_sitemap(pages)
+    write_llms(pages)
     state = "ON — Matomo site " + MATOMO_SITE_ID.strip() if ANALYTICS_ON else "OFF"
     print(f"Analytics: {state}")
     print(f"SEO tags added to {seo_n} page(s); CSP updated on {sec_n} page(s); "
-          f"analytics tag changed on {an_n} page(s); legal links on {leg_n} page(s).")
-    print(f"sitemap.xml rebuilt with {n} URLs.")
+          f"analytics tag changed on {an_n} page(s); legal links on {leg_n} page(s); "
+          f"JSON-LD updated on {ld_n} page(s).")
+    print(f"sitemap.xml rebuilt with {n} URLs; llms.txt regenerated.")
 
 
 if __name__ == "__main__":
