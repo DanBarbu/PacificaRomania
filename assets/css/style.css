@@ -441,3 +441,8 @@ section{padding:76px 0}
 .essay-notes ol{margin:0; padding-left:1.3rem}
 .essay-notes li{font-size:0.86rem; line-height:1.55; color:#5a5346; margin-bottom:9px}
 .essay-notes a{color:var(--ochre)}
+
+/* ---------- Inline essay figures ---------- */
+.essay-figure{margin:2rem auto; max-width:420px; text-align:center}
+.essay-figure img{width:100%; height:auto; border-radius:4px; cursor:zoom-in; box-shadow:0 6px 22px rgba(27,26,23,0.16)}
+.essay-figure figcaption{font-family:var(--sans); font-size:0.78rem; line-height:1.5; color:#6b665c; margin-top:9px}
