@@ -1,14 +1,14 @@
-# Content-depth drafts (for review before publishing)
+# Content-depth copy — living source (PUBLISHED)
 
-These are **drafts** responding to the Airo "Content Depth" suggestions. Nothing
-here is live yet. Read/edit the copy; tell me which pieces to publish and I'll
-integrate them into the pages (bilingual, matching the site's markup). Each
-regional intro is written to *expand* the existing short intro, not replace its
-meaning.
+**Status: published to the live site on 2026-07-17.** All three pieces below are
+now live (regional intros on the five collection pages, the Eliade glossary on
+the About page, and the "From the Journal" digest on the home page). This file
+is kept as the **editable source of that copy** — refine the wording here, then
+tell me (or edit the matching page directly) and I'll re-sync it. Reachable from
+the admin hub at `/admin.html`.
 
-> Scholarly note: I've aimed for accuracy, but please verify names, dates and
-> attributions against your catalogue before these go public under
-> AlgorithmIntelligence SRL.
+> Scholarly note: verify names, dates and attributions against your catalogue
+> whenever you revise — this copy is public under AlgorithmIntelligence SRL.
 
 ---
 
