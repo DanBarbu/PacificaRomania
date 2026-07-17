@@ -196,8 +196,6 @@ def upsert_legal_links(src, prefix):
 
 
 def inject_seo(rel, src):
-    if "og:title" in src:
-        return src, False
     mt = re.search(r"<title>(.*?)</title>", src, re.S)
     md = re.search(r'<meta name="description" content="(.*?)">', src, re.S)
     if not mt or not md:
@@ -209,6 +207,20 @@ def inject_seo(rel, src):
     canon = canonical_for(rel)
     img = og_image_for(rel)
     typ = "article" if rel.startswith("journal/") else "website"
+
+    if "og:title" in src:
+        # Already tagged — re-sync the title/description-derived fields so
+        # editing <title> or the meta description propagates to social cards.
+        new = src
+        for pat, val in (
+            (r'(<meta property="og:title" content=")[^"]*(">)', title),
+            (r'(<meta property="og:description" content=")[^"]*(">)', desc),
+            (r'(<meta name="twitter:title" content=")[^"]*(">)', title),
+            (r'(<meta name="twitter:description" content=")[^"]*(">)', desc),
+        ):
+            new = re.sub(pat, lambda m, v=val: m.group(1) + v + m.group(2), new, count=1)
+        return new, (new != src)
+
     block = f'''<link rel="canonical" href="{canon}">
 <meta property="og:type" content="{typ}">
 <meta property="og:site_name" content="PacificaRomania">
