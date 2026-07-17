@@ -179,8 +179,13 @@ Google Search Console, Bing Webmaster Tools, Wikidata.
    About/ContactPage, BreadcrumbList everywhere; Eliade Q41590 and Brâncuși
    Q153048 entity anchors) — all generated and owned by `tools/build_seo.py`;
    `llms.txt` auto-generated from the live page list on every build.
-2. Phase 2 (FAQ + FAQPage schema) — one session, copy drafted for approval
-   like the regional intros were.
+2. Phase 2 (FAQ + FAQPage schema) — one session.
+   **✅ SHIPPED 2026-07-17:** bilingual six-question FAQ on the About page
+   (What is it / where exhibited / regions / Eliade & Brâncuși / how to visit &
+   contact / who operates it), generated from a single `FAQ` list in
+   `build_seo.py` that produces both the visible block and the `FAQPage`
+   JSON-LD (validated, 6 questions). Region intros already supply the
+   definitional openers; operator facts already sitewide (footer/legal/FAQ).
 3. Phase 3 (Wikidata + webmaster registrations) — needs **your** accounts;
    step-by-step guide provided when you're ready.
 4. Routine (§7) starts the month after Phases 1–2 ship.

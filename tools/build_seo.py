@@ -196,6 +196,142 @@ PERSONS = [
     },
 ]
 
+# FAQ — single source of truth for the visible block (About page) AND the
+# FAQPage JSON-LD. Answers are plain text (no markup): safe in JSON and HTML.
+FAQ = [
+    {
+        "q_en": "What is PacificaRomania?",
+        "q_ro": "Ce este PacificaRomania?",
+        "a_en": "PacificaRomania is a cultural art collection of over 150 works of "
+                "Pacific and Island Southeast Asian art — painted Dreamings, war "
+                "canoes, carved ancestors and sacred vessels — read through the "
+                "comparative history of religion of Mircea Eliade and the sculptural "
+                "cosmology of Constantin Brâncuși.",
+        "a_ro": "PacificaRomania este o colecție de artă culturală cu peste 150 de "
+                "lucrări de artă din Pacific și Asia de Sud-Est insulară — picturi "
+                "Dreaming, canoe de război, strămoși sculptați și vase sacre — citite "
+                "prin istoria comparată a religiilor a lui Mircea Eliade și cosmologia "
+                "sculpturală a lui Constantin Brâncuși.",
+    },
+    {
+        "q_en": "Where was the collection first exhibited?",
+        "q_ro": "Unde a fost expusă colecția pentru prima dată?",
+        "a_en": "It was first exhibited at the Embassy of Romania in Canberra, "
+                "Australia, in 2019–2020, as a cultural-diplomacy project linking "
+                "Romania and the Pacific.",
+        "a_ro": "A fost expusă pentru prima dată la Ambasada României la Canberra, "
+                "Australia, în 2019–2020, ca proiect de diplomație culturală care "
+                "leagă România de Pacific.",
+    },
+    {
+        "q_en": "What regions and cultures does the collection cover?",
+        "q_ro": "Ce regiuni și culturi acoperă colecția?",
+        "a_en": "Five regions: Aboriginal Australia, Melanesia, Micronesia, Polynesia "
+                "and Island Southeast Asia — spanning Western Desert painting, Sepik "
+                "and Solomon Islands sculpture, Marshallese navigation, Māori and "
+                "Polynesian taonga, and Batak, Orang Asli, Dayak and Burmese art.",
+        "a_ro": "Cinci regiuni: Australia aborigină, Melanezia, Micronezia, Polinezia "
+                "și Asia de Sud-Est insulară — de la pictura din Deșertul de Vest și "
+                "sculptura din Sepik și Insulele Solomon la navigația marshalleză, "
+                "taonga maori și polineziene, și arta batak, orang asli, dayak și "
+                "birmaneză.",
+    },
+    {
+        "q_en": "How does the collection relate to Mircea Eliade and Constantin Brâncuși?",
+        "q_ro": "Cum se raportează colecția la Mircea Eliade și Constantin Brâncuși?",
+        "a_en": "The collection reads Pacific and Southeast Asian objects through "
+                "Eliade's ideas of the sacred — hierophany, axis mundi, the eternal "
+                "return — and sets them beside Brâncuși's pursuit of essential, "
+                "originating form, treating each work as a living cosmology rather "
+                "than an ethnographic artifact.",
+        "a_ro": "Colecția citește obiectele din Pacific și Asia de Sud-Est prin ideile "
+                "lui Eliade despre sacru — hierofanie, axis mundi, eterna reîntoarcere "
+                "— și le așază alături de căutarea de către Brâncuși a formei "
+                "esențiale, originare, tratând fiecare lucrare ca pe o cosmologie vie, "
+                "nu ca pe un artefact etnografic.",
+    },
+    {
+        "q_en": "Can the collection be visited, and how do I get in touch?",
+        "q_ro": "Poate fi vizitată colecția și cum vă pot contacta?",
+        "a_en": "PacificaRomania is presented online at pacificaromania.space, with "
+                "curatorial essays in the Journal. For enquiries — including research, "
+                "loans or exhibitions — contact danbarbu22@gmail.com.",
+        "a_ro": "PacificaRomania este prezentată online la pacificaromania.space, cu "
+                "eseuri curatoriale în Jurnal. Pentru solicitări — inclusiv cercetare, "
+                "împrumuturi sau expoziții — scrieți la danbarbu22@gmail.com.",
+    },
+    {
+        "q_en": "Who owns and operates PacificaRomania?",
+        "q_ro": "Cine deține și administrează PacificaRomania?",
+        "a_en": "The collection is operated by AlgorithmIntelligence SRL, based in "
+                "Bucharest, Romania.",
+        "a_ro": "Colecția este administrată de AlgorithmIntelligence SRL, cu sediul în "
+                "București, România.",
+    },
+]
+
+FAQ_START = "<!-- faq:start -->"
+FAQ_END = "<!-- faq:end -->"
+
+
+def faq_page_ld():
+    return {
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": item["q_en"],
+                "acceptedAnswer": {"@type": "Answer", "text": item["a_en"]},
+            }
+            for item in FAQ
+        ],
+    }
+
+
+def faq_html():
+    def esc(t):
+        return html.escape(t, quote=False)
+    items = []
+    for it in FAQ:
+        items.append(
+            '<div class="faq-item">'
+            f'<h3><span data-l="en">{esc(it["q_en"])}</span>'
+            f'<span data-l="ro">{esc(it["q_ro"])}</span></h3>'
+            f'<p><span data-l="en">{esc(it["a_en"])}</span>'
+            f'<span data-l="ro">{esc(it["a_ro"])}</span></p>'
+            '</div>'
+        )
+    body = "\n      ".join(items)
+    return (
+        f'{FAQ_START}\n<section class="faq-section">\n  <div class="wrap">\n'
+        '    <div class="section-head"><div>\n'
+        '      <span class="eyebrow"><span data-l="en">Questions</span>'
+        '<span data-l="ro">Întrebări</span></span>\n'
+        '      <h2><span data-l="en">Frequently asked questions</span>'
+        '<span data-l="ro">Întrebări frecvente</span></h2>\n'
+        '    </div></div>\n'
+        f'    <div class="faq-list">\n      {body}\n    </div>\n'
+        f'  </div>\n</section>\n{FAQ_END}'
+    )
+
+
+def upsert_faq(src, rel):
+    if rel != "about.html":
+        return src, False
+    block = faq_html()
+    existing = re.search(
+        re.escape(FAQ_START) + r".*?" + re.escape(FAQ_END), src, re.S
+    )
+    if existing:
+        if existing.group(0) != block:
+            return src[:existing.start()] + block + src[existing.end():], True
+        return src, False
+    m = re.search(r"(\n[ \t]*)(<footer)", src)
+    if not m:
+        return src, False
+    return src[:m.start()] + m.group(1) + block + m.group(1) + m.group(2) + src[m.end():], True
+
+
 JSONLD_START = "<!-- jsonld:start -->"
 JSONLD_END = "<!-- jsonld:end -->"
 
@@ -303,6 +439,7 @@ def jsonld_for(rel, src):
         }
         if rel == "about.html":
             node["about"] = PERSONS
+            return [node, faq_page_ld(), breadcrumb_ld(rel, title)]
         return [node, breadcrumb_ld(rel, title)]
     return None  # privacy, legal, 404: skip
 
@@ -479,12 +616,13 @@ def main():
         src, s1 = upsert_security(src)
         src, s3 = upsert_analytics(src, prefix)
         src, s4 = upsert_legal_links(src, prefix)
+        src, s6 = upsert_faq(src, rel)
         src, s5 = upsert_jsonld(src, rel)
         if rel not in NO_INDEX:
             src, s2 = inject_seo(rel, src)
         else:
             s2 = False
-        if s1 or s2 or s3 or s4 or s5:
+        if s1 or s2 or s3 or s4 or s5 or s6:
             open(rel, "w", encoding="utf-8").write(src)
         seo_n += int(s2)
         sec_n += int(s1)

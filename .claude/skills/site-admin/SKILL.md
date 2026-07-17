@@ -178,10 +178,13 @@ logs individual IPs. Admin hub at `/admin.html`. Deploy/DNS/enable steps are in
 - **Consent is mandatory** (GDPR + ePrivacy): `assets/js/analytics.js` shows a
   bilingual banner, loads Matomo only on "Accept", treats Do-Not-Track as a
   refusal, and exposes a persistent "Cookie settings" control. Don't bypass it.
-- **Never hand-edit** the analytics tag, the CSP, the footer legal links, or
-  the JSON-LD structured-data blocks in the HTML — `build_seo.py` owns all four
-  (marker comments `analytics:*`, `legal:*`, `jsonld:*`) and will overwrite
-  them. Change the config constants / generator functions instead. The tool
+- **Never hand-edit** the analytics tag, the CSP, the footer legal links, the
+  JSON-LD structured-data blocks, or the About-page FAQ in the HTML —
+  `build_seo.py` owns them all (marker comments `analytics:*`, `legal:*`,
+  `jsonld:*`, `faq:*`) and will overwrite them. The FAQ's visible block and its
+  FAQPage schema are both generated from the single `FAQ` list in
+  `build_seo.py` — edit the copy there. Change the config constants / generator
+  functions instead. The tool
   also regenerates `llms.txt` (the AI-agent site index) and `sitemap.xml` on
   every run, and `robots.txt` carries an explicit allow-list of AI crawlers
   (see `docs/ai-visibility-plan.md` for the policy and monthly routine).

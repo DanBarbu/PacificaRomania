@@ -191,6 +191,15 @@ Proposed three essays (reusing existing thumbnails + deks):
 
 ---
 
+## D. About-page FAQ (PUBLISHED 2026-07-17)
+
+Six bilingual Q&As live on `about.html` (What is PacificaRomania · where first
+exhibited · regions & cultures · relation to Eliade & Brâncuși · visiting &
+contact · who operates it). Unlike the copy above, the FAQ's **editable source
+is the `FAQ` list in `tools/build_seo.py`** — it generates both the visible
+block and the `FAQPage` structured data from one place, so edit it there and
+rerun `python3 tools/build_seo.py`.
+
 ## What I'd skip (from the Airo list)
 - **Embedded videos / audio explainers** — needs media assets and would load
   third-party players, which the CSP deliberately blocks. Not worth it for a
