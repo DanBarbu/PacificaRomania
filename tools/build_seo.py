@@ -37,6 +37,11 @@ DEFAULT_IMG = "assets/images/folio/aboriginal-birds-in-space.jpg"
 # Self-hosted Matomo on stats.pacificaromania.space (docs/analytics-setup.md).
 # Matomo logs individual visitor IPs, so it is loaded ONLY after opt-in consent
 # (assets/js/analytics.js). Paste the numeric Site ID to switch on. Empty = OFF.
+# BEFORE setting MATOMO_SITE_ID, enable in the Matomo server admin
+# (Administration -> Privacy -> Anonymize data): IP anonymisation = 2 bytes,
+# support for Do Not Track, and 14-month log deletion. See
+# docs/analytics-setup.md section 3. IP anonymisation is a Matomo-server
+# setting; it cannot be enforced from this repo.
 MATOMO_URL = "https://stats.pacificaromania.space/"   # trailing slash required
 MATOMO_ORIGIN = MATOMO_URL.rstrip("/")
 MATOMO_SITE_ID = ""   # e.g. "1" — empty = analytics disabled (safe default)
