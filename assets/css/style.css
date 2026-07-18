@@ -247,6 +247,9 @@ section{padding:76px 0}
 .object-card h3{font-size:1.12rem; margin:0 0 5px; line-height:1.2}
 .object-maker{font-size:0.78rem; letter-spacing:0.03em; color:var(--ochre-dim); font-weight:600; margin:0 0 9px; text-transform:uppercase}
 .object-note{font-size:0.92rem; color:#4a463f; margin:0}
+.object-essay-link{margin:10px 0 0; font-family:var(--sans); font-size:0.8rem; letter-spacing:0.04em}
+.object-essay-link a{color:var(--ochre); font-weight:600; text-decoration:none}
+.object-essay-link a:hover{text-decoration:underline}
 
 /* region index cards use a photo */
 .card-figure.has-photo{aspect-ratio:4/3; padding:0}

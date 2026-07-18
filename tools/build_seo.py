@@ -72,6 +72,28 @@ ESSAY_IMG = {
     "asaro-mudmen": "asaro-spirit-head.jpg",
     "raja-bomoh": "raja-bomoh.jpg",
     "tiger-in-chains": "tiger-in-chains.jpg",
+    # Australia collection — per-artefact essays (images under assets/images/australia/)
+    "frog-and-kangaroo-dreaming": "australia/frog-and-kangaroo-dreaming.jpg",
+    "ngarlu-love-story": "australia/ngarlu-love-story.jpg",
+    "seven-sisters": "australia/seven-sisters.jpg",
+    "yuelamu-honey-ant-dreaming": "australia/yuelamu-honey-ant-dreaming.jpg",
+    "bush-medicine-leaves": "australia/bush-medicine-leaves.jpg",
+    "mountain-devil-lizard": "australia/mountain-devil-lizard.jpg",
+    "bush-banana": "australia/bush-banana.jpg",
+    "waltitjata": "australia/waltitjata.jpg",
+    "tingari": "australia/tingari.jpg",
+    "nine-mimis-and-rainbow-serpent": "australia/nine-mimis-and-rainbow-serpent.jpg",
+    "body-paint": "australia/body-paint.jpg",
+    "freshwater-crocodile": "australia/freshwater-crocodile.jpg",
+    "water-goanna": "australia/water-goanna.jpg",
+    "water-dreaming": "australia/my-country-water-dreaming.jpg",
+    "ghost-gums": "australia/ghost-gums.jpg",
+    "central-australian-landscape": "australia/central-australian-landscape.jpg",
+    "witch-doctor-and-the-windmill": "australia/witch-doctor-and-the-windmill.jpg",
+    "the-missionaries": "australia/the-missionaries.jpg",
+    "dhari-headdress": "australia/dhari-headdress.jpg",
+    "larrakitj-ezariah-kelly": "australia/larrakitj-ezariah-kelly.jpg",
+    "larrakitj-napunda-marawili": "australia/larrakitj-napunda-marawili.jpg",
 }
 
 
@@ -123,7 +145,9 @@ def canonical_for(rel):
 def og_image_for(rel):
     slug = os.path.splitext(os.path.basename(rel))[0]
     if rel.startswith("journal/") and slug in ESSAY_IMG:
-        return BASE + "assets/images/folio/" + ESSAY_IMG[slug]
+        val = ESSAY_IMG[slug]
+        sub = val if "/" in val else "folio/" + val
+        return BASE + "assets/images/" + sub
     return BASE + DEFAULT_IMG
 
 
