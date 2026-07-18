@@ -71,7 +71,7 @@ ESSAY_IMG = {
     "naga-morsarang": "naga-morsarang.jpg",
     "asaro-mudmen": "asaro-spirit-head.jpg",
     "raja-bomoh": "raja-bomoh.jpg",
-    "tiger-in-chains": "mah-meri-masks.jpg",
+    "tiger-in-chains": "tiger-in-chains.jpg",
 }
 
 
@@ -597,8 +597,10 @@ def inject_seo(rel, src):
         for pat, val in (
             (r'(<meta property="og:title" content=")[^"]*(">)', title),
             (r'(<meta property="og:description" content=")[^"]*(">)', desc),
+            (r'(<meta property="og:image" content=")[^"]*(">)', img),
             (r'(<meta name="twitter:title" content=")[^"]*(">)', title),
             (r'(<meta name="twitter:description" content=")[^"]*(">)', desc),
+            (r'(<meta name="twitter:image" content=")[^"]*(">)', img),
         ):
             new = re.sub(pat, lambda m, v=val: m.group(1) + v + m.group(2), new, count=1)
         return new, (new != src)
