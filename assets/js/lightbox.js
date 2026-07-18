@@ -1,7 +1,11 @@
 // PacificaRomania — click any essay image to view the full, uncropped picture.
 (function () {
   function init() {
-    var imgs = document.querySelectorAll(".essay-lead img, .essay-body img");
+    // All standalone content images across the site (essays + collection
+    // galleries). Images inside a link are skipped below so they keep navigating.
+    var imgs = document.querySelectorAll(
+      ".essay-lead img, .essay-body img, .essay-figure img, .object-img img"
+    );
     if (!imgs.length) return;
 
     var overlay = document.createElement("div");
@@ -32,6 +36,8 @@
     }
 
     for (var i = 0; i < imgs.length; i++) {
+      if (imgs[i].closest("a")) continue; // linked images keep navigating
+      imgs[i].style.cursor = "zoom-in";
       imgs[i].addEventListener("click", function () {
         open(this.currentSrc || this.src, this.alt);
       });
