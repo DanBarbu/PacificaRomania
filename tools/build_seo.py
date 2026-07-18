@@ -94,6 +94,7 @@ ESSAY_IMG = {
     "dhari-headdress": "australia/dhari-headdress.jpg",
     "larrakitj-ezariah-kelly": "australia/larrakitj-ezariah-kelly.jpg",
     "larrakitj-napunda-marawili": "australia/larrakitj-napunda-marawili.jpg",
+    "wandjina": "australia/wandjina-lily-karadada.jpg",
 }
 
 
