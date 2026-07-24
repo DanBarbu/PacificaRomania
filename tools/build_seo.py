@@ -96,6 +96,7 @@ ESSAY_IMG = {
     "larrakitj-napunda-marawili": "australia/larrakitj-napunda-marawili.jpg",
     "wandjina": "australia/wandjina-lily-karadada.jpg",
     "mah-meri-moyang": "mah-meri-masks.jpg",
+    "moyang-crouched": "moyang-crouched.jpg",
 }
 
 
