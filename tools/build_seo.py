@@ -166,7 +166,9 @@ def upsert_security(src):
     EMBED_HOSTS) get frame-src widened to just that host; all others stay
     frame-src 'none'.
     """
-    embedded = [h for h in EMBED_HOSTS if h in src]
+    # Detect the host only in an actual iframe src attribute, not in the CSP
+    # meta itself (otherwise frame-src could never revert once first widened).
+    embedded = [h for h in EMBED_HOSTS if f'src="{h}' in src or f"src='{h}" in src]
     frame_src = " ".join(embedded) if embedded else "'none'"
     csp = compute_csp(frame_src)
     changed = False
