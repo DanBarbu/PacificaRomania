@@ -98,7 +98,12 @@ ESSAY_IMG = {
 }
 
 
-def compute_csp():
+# Hosts allowed to be embedded in an <iframe> on pages that opt in (e.g. a
+# 3D-model viewer). frame-src stays 'none' on every page that does not embed one.
+EMBED_HOSTS = ("https://www.kiriengine.app",)
+
+
+def compute_csp(frame_src="'none'"):
     img = "img-src 'self' data:"
     script = "script-src 'self' 'unsafe-inline'"
     connect = "connect-src 'self'"
@@ -109,7 +114,7 @@ def compute_csp():
     return (
         f"default-src 'self'; {img}; style-src 'self' 'unsafe-inline'; "
         f"{script}; {connect}; font-src 'self'; object-src 'none'; "
-        f"base-uri 'self'; form-action 'self'; frame-src 'none'; upgrade-insecure-requests"
+        f"base-uri 'self'; form-action 'self'; frame-src {frame_src}; upgrade-insecure-requests"
     )
 
 
@@ -153,8 +158,15 @@ def og_image_for(rel):
 
 
 def upsert_security(src):
-    """Ensure referrer meta exists and the CSP meta matches compute_csp()."""
-    csp = compute_csp()
+    """Ensure referrer meta exists and the CSP meta matches compute_csp().
+
+    Pages that embed an approved third-party viewer (an <iframe> to a host in
+    EMBED_HOSTS) get frame-src widened to just that host; all others stay
+    frame-src 'none'.
+    """
+    embedded = [h for h in EMBED_HOSTS if h in src]
+    frame_src = " ".join(embedded) if embedded else "'none'"
+    csp = compute_csp(frame_src)
     changed = False
     if "Content-Security-Policy" in src:
         new = re.sub(
