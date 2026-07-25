@@ -117,6 +117,29 @@ essay loads, in order: `main.js`, `i18n.js`, `lightbox.js`.
   card/link on `collection.html`. `tools/build_seo.py` will pick it up for the
   sitemap and head tags automatically on the next run.
 
+## How to embed a 3D model at the end of an essay
+
+Use the helper — **do not hand-write the iframe** (it keeps markup, lazy-load,
+and the CSP in sync automatically):
+
+```bash
+python3 tools/embed_model.py <slug-or-path> <kiri-url-or-id> \
+    --label "the naga morsarang" --label-ro "a vasului naga morsarang"
+```
+
+- Inserts the standard responsive, lazy-loaded `.model-embed` block (bilingual
+  "Explore in 3D" heading + caption) right after the essay's `</article>`.
+- Re-running with a different URL **updates the existing block in place**
+  (idempotent); `--label/--label-ro` set the caption object name.
+- It runs `build_seo.py` for you (pass `--no-build` to skip).
+
+**CSP note:** only pages that actually embed an approved host get `frame-src`
+widened. `build_seo.py` keeps a whitelist, `EMBED_HOSTS` (currently
+`https://www.kiriengine.app`), and detects the host **in an `<iframe src="…">`**
+— so a page reverts to `frame-src 'none'` the moment its embed is removed. To
+allow a new viewer host, add it to `EMBED_HOSTS`. Everything else stays
+`frame-src 'none'`; do not loosen the CSP by hand.
+
 ## SEO — what every page must have
 
 `tools/build_seo.py` maintains these; run it after adding pages. Each page
@@ -238,6 +261,7 @@ assuming a bug.
 |------|---------|
 | New essay | copy `journal/<x>.html`, add folio image, add index row, register in `build_seo.py`, run tools |
 | New object | add `.object-card` in the region file (bilingual note) |
+| Embed a 3D model | `python3 tools/embed_model.py <slug> <kiri-url> --label "…" --label-ro "…"` |
 | New page | copy a same-type page, then `python3 tools/build_seo.py` |
 | Any text edit | keep EN **and** RO in sync |
 | SEO refresh | `python3 tools/build_seo.py` |
