@@ -97,7 +97,7 @@ ESSAY_IMG = {
     "wandjina": "australia/wandjina-lily-karadada.jpg",
     "mah-meri-moyang": "mah-meri-masks.jpg",
     "moyang-crouched": "moyang-crouched.jpg",
-    "cape-romania-cartographic-journey": "cape-romania.jpg",
+    "cape-romania-cartographic-journey": "cape-romania-visit.jpg",
 }
 
 
