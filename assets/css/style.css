@@ -450,6 +450,11 @@ section{padding:76px 0}
 .essay-figure img{width:100%; height:auto; border-radius:4px; cursor:zoom-in; box-shadow:0 6px 22px rgba(27,26,23,0.16)}
 .essay-figure figcaption{font-family:var(--sans); font-size:0.78rem; line-height:1.5; color:#6b665c; margin-top:9px}
 
+/* ---------- Archival map-source callout ---------- */
+.map-source{margin:1.4rem 0; padding:12px 16px; border:1px solid var(--line); border-left:3px solid var(--gold); border-radius:4px; background:rgba(193,150,47,0.06); font-family:var(--sans); font-size:0.85rem; line-height:1.55; color:#4a463f}
+.map-source strong{color:var(--ochre)}
+.map-source a{color:var(--ochre)}
+
 /* ---------- 3D model viewer embed ---------- */
 .model-embed{margin:2.4rem 0 0}
 .model-embed h3{font-family:var(--sans); font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--ochre); margin:0 0 12px}

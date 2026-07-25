@@ -97,12 +97,13 @@ ESSAY_IMG = {
     "wandjina": "australia/wandjina-lily-karadada.jpg",
     "mah-meri-moyang": "mah-meri-masks.jpg",
     "moyang-crouched": "moyang-crouched.jpg",
+    "cape-romania-cartographic-journey": "cape-romania.jpg",
 }
 
 
 # Hosts allowed to be embedded in an <iframe> on pages that opt in (e.g. a
 # 3D-model viewer). frame-src stays 'none' on every page that does not embed one.
-EMBED_HOSTS = ("https://www.kiriengine.app",)
+EMBED_HOSTS = ("https://www.kiriengine.app", "https://www.youtube-nocookie.com")
 
 
 def compute_csp(frame_src="'none'"):
