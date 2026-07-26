@@ -1,0 +1,79 @@
+name: Build & verify
+
+# The always-on "backend" for this static site. It runs on GitHub's own
+# infrastructure — no local container, no expiring tokens — so edits from ANY
+# maintainer (human or AI assistant) are validated the same way.
+#
+#   * Pull requests  -> build + verify, and FAIL if generated files are stale
+#                       (a gate: broken links / bad tags / un-rebuilt SEO block merge).
+#   * Push to main   -> build + verify, then auto-commit any regenerated
+#                       SEO files so the deployed site is always in sync.
+#   * Manual         -> run from the Actions tab on demand (workflow_dispatch).
+#
+# Publishing is still done by GitHub Pages from the `main` branch (unchanged);
+# this workflow only validates and self-heals the generated files.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# One run per ref; a newer push supersedes an in-flight run on the same branch.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Check out the branch (not a detached SHA) so the auto-commit can push back.
+          ref: ${{ github.ref_name }}
+          persist-credentials: true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild SEO (sitemap.xml, llms.txt, injected head tags)
+        run: python3 tools/build_seo.py
+
+      - name: Verify links, tags, and EN/RO parity
+        run: python3 tools/verify.py
+
+      # --- Pull requests: refuse to merge work whose generated files are stale. ---
+      - name: Fail if generated files are out of date (pull requests)
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet; then
+            echo "::error::Generated files are out of date. Run 'python3 tools/build_seo.py' locally and commit the result before merging."
+            git --no-pager diff --stat
+            exit 1
+          fi
+          echo "Generated files are up to date."
+
+      # --- Push to main / manual: auto-commit anything build_seo.py regenerated. ---
+      # verify.py has already passed at this point, so we never push a broken tree.
+      # Pushes made with GITHUB_TOKEN do not re-trigger this workflow (no loop);
+      # GitHub Pages still redeploys from the new commit.
+      - name: Sync generated files
+        if: github.event_name != 'pull_request'
+        run: |
+          if git diff --quiet; then
+            echo "Generated files already in sync — nothing to commit."
+          else
+            git config user.name  "pacificaromania-ci[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore(ci): sync generated SEO files [skip ci]"
+            git push
+          fi

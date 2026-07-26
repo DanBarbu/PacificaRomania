@@ -255,6 +255,22 @@ workflow succeeds. If a change "doesn't show", it is almost always browser
 cache — hard-refresh (Ctrl/Cmd+Shift+R) or use a private window before
 assuming a bug.
 
+## Continuous integration (the always-on safety net)
+
+`.github/workflows/ci.yml` runs `build_seo.py` + `verify.py` on GitHub's own
+infrastructure for **every** push and pull request to `main` — independent of
+any local container or assistant. See `docs/ci.md` for the full description.
+
+- **Pull requests** fail if a link/tag is broken or if the generated files are
+  stale (author forgot to run `build_seo.py`). This is the merge gate.
+- **Pushes to `main`** re-run the tools and **auto-commit** any regenerated SEO
+  files (`chore(ci): sync generated SEO files [skip ci]`) so the live site stays
+  in sync even after a hand edit. Pages still deploys from `main` as before.
+- The rule of thumb is unchanged: if `git status` is clean after you run the two
+  tools locally, CI will be green. Fix any red run before assuming the site is fine.
+- To make the gate *block* merges, enable branch protection on `main` and require
+  the `build-verify` check (one-time repo setting; steps in `docs/ci.md`).
+
 ## Quick reference
 
 | Task | Do this |
