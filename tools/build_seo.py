@@ -98,6 +98,7 @@ ESSAY_IMG = {
     "mah-meri-moyang": "mah-meri-masks.jpg",
     "moyang-crouched": "moyang-crouched.jpg",
     "cape-romania-cartographic-journey": "cape-romania-visit.jpg",
+    "monkey-on-horseback": "monkey-on-horseback.jpg",
 }
 
 
