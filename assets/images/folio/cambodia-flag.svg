@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Flag of Cambodia — a white Angkor Wat on a red band between two blue bands">
+  <!-- Bands: blue 1/4, red 1/2, blue 1/4 -->
+  <rect x="0" y="0" width="600" height="400" fill="#032ea1"/>
+  <rect x="0" y="100" width="600" height="200" fill="#e00025"/>
+  <!-- Angkor Wat, white -->
+  <g fill="#ffffff">
+    <!-- Steps and plinth -->
+    <rect x="138" y="280" width="324" height="8"/>
+    <rect x="150" y="270" width="300" height="10"/>
+    <!-- Gallery / long base -->
+    <rect x="162" y="250" width="276" height="20"/>
+    <!-- Central tower: stacked tiers + lotus finial -->
+    <rect x="270" y="232" width="60" height="18"/>
+    <rect x="276" y="214" width="48" height="18"/>
+    <rect x="282" y="196" width="36" height="18"/>
+    <rect x="288" y="178" width="24" height="18"/>
+    <path d="M294 178 C294 166 300 150 300 150 C300 150 306 166 306 178 Z"/>
+    <!-- Left tower -->
+    <rect x="203" y="232" width="44" height="18"/>
+    <rect x="208" y="216" width="34" height="16"/>
+    <rect x="213" y="200" width="24" height="16"/>
+    <path d="M219 200 C219 190 225 178 225 178 C225 178 231 190 231 200 Z"/>
+    <!-- Right tower -->
+    <rect x="353" y="232" width="44" height="18"/>
+    <rect x="358" y="216" width="34" height="16"/>
+    <rect x="363" y="200" width="24" height="16"/>
+    <path d="M369 200 C369 190 375 178 375 178 C375 178 381 190 381 200 Z"/>
+  </g>
+  <!-- Doorways (red, cut back into the white) -->
+  <g fill="#e00025">
+    <rect x="293" y="256" width="14" height="14"/>
+    <rect x="210" y="258" width="12" height="12"/>
+    <rect x="378" y="258" width="12" height="12"/>
+  </g>
+</svg>

@@ -99,6 +99,7 @@ ESSAY_IMG = {
     "moyang-crouched": "moyang-crouched.jpg",
     "cape-romania-cartographic-journey": "cape-romania-visit.jpg",
     "monkey-on-horseback": "monkey-on-horseback.jpg",
+    "echoes-of-the-khmer": "khmer-avalokiteshvara.jpg",
 }
 
 
