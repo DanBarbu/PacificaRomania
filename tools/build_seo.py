@@ -100,7 +100,7 @@ ESSAY_IMG = {
     "cape-romania-cartographic-journey": "cape-romania-visit.jpg",
     "monkey-on-horseback": "monkey-on-horseback.jpg",
     "echoes-of-the-khmer": "khmer-avalokiteshvara.jpg",
-    "country-written-in-fire": "australia/central-australian-landscape.jpg",
+    "country-written-in-fire": "jorna-newberry-fire-dreaming.jpg",
 }
 
 
