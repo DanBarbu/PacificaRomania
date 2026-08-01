@@ -101,6 +101,7 @@ ESSAY_IMG = {
     "monkey-on-horseback": "monkey-on-horseback.jpg",
     "echoes-of-the-khmer": "khmer-avalokiteshvara.jpg",
     "country-written-in-fire": "jorna-newberry-fire-dreaming.jpg",
+    "lupul-rockhole-eagles-nest": "lupul-rockhole-eagles-nest.jpg",
 }
 
 
