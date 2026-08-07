@@ -102,6 +102,7 @@ ESSAY_IMG = {
     "echoes-of-the-khmer": "khmer-avalokiteshvara.jpg",
     "country-written-in-fire": "jorna-newberry-fire-dreaming.jpg",
     "lupul-rockhole-eagles-nest": "lupul-rockhole-eagles-nest-v2.jpg",
+    "objects-that-remember-the-sea": "matau-hook.jpg",
 }
 
 
