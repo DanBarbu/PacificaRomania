@@ -108,7 +108,7 @@ ESSAY_IMG = {
 
 # Hosts allowed to be embedded in an <iframe> on pages that opt in (e.g. a
 # 3D-model viewer). frame-src stays 'none' on every page that does not embed one.
-EMBED_HOSTS = ("https://www.kiriengine.app", "https://www.youtube-nocookie.com")
+EMBED_HOSTS = ("https://www.kiriengine.app", "https://www.youtube-nocookie.com", "https://www.facebook.com")
 
 
 def compute_csp(frame_src="'none'"):
