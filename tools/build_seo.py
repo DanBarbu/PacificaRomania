@@ -104,6 +104,7 @@ ESSAY_IMG = {
     "lupul-rockhole-eagles-nest": "lupul-rockhole-eagles-nest-v2.jpg",
     "objects-that-remember-the-sea": "matau-hook.jpg",
     "the-weapon-that-comes-back": "the-weapon-that-comes-back.jpg",
+    "two-ways-to-rise": "pukumani-pole.jpg",
 }
 
 
