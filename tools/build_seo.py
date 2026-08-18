@@ -48,6 +48,14 @@ MATOMO_ORIGIN = MATOMO_URL.rstrip("/")
 MATOMO_SITE_ID = ""   # e.g. "1" — empty = analytics disabled (safe default)
 ANALYTICS_ON = bool(MATOMO_SITE_ID.strip())
 
+# ---- Google Analytics 4 (gtag.js) --------------------------------------------
+# Aggregate website-traffic monitoring (page views, sessions) via GA4. The tag
+# is injected into <head> on every page and the Content-Security-Policy is
+# widened to allow Google's domains. GA4 anonymises IPs by default. Paste the
+# Measurement ID (format G-XXXXXXXXXX); empty = OFF.
+GA_MEASUREMENT_ID = "G-5TJC3CR266"
+GA_ON = bool(GA_MEASUREMENT_ID.strip())
+
 # ---- Search-engine verification (AI visibility Phase 3) ----------------------
 # Paste the HTML-tag token from Google Search Console (URL-prefix property) and
 # Bing Webmaster Tools, then rerun this tool. Empty = no tag injected. The tag
@@ -121,6 +129,12 @@ def compute_csp(frame_src="'none'"):
         img += " " + MATOMO_ORIGIN            # Matomo tracking pixel
         script += " " + MATOMO_ORIGIN         # matomo.js
         connect += " " + MATOMO_ORIGIN        # matomo.php beacon
+    if GA_ON:
+        gtm = "https://www.googletagmanager.com"
+        ga = "https://*.google-analytics.com"
+        img += f" {gtm} {ga}"                 # GA4 collect pixel
+        script += f" {gtm}"                   # gtag.js loader
+        connect += f" {ga} https://*.googletagmanager.com"  # GA4 beacons
     return (
         f"default-src 'self'; {img}; style-src 'self' 'unsafe-inline'; "
         f"{script}; {connect}; font-src 'self'; object-src 'none'; "
@@ -133,16 +147,27 @@ ANALYTICS_END = "<!-- analytics:end -->"
 
 
 def analytics_block(prefix):
-    """Consent-gated Matomo loader. `prefix` is '' or '../' for the asset path."""
-    if not ANALYTICS_ON:
+    """Analytics loaded into <head>. Google Analytics 4 (gtag.js) when GA_ON;
+    consent-gated Matomo when ANALYTICS_ON. `prefix` is '' or '../' for the
+    Matomo asset path. Returns '' (and upsert strips the block) when both off."""
+    parts = []
+    if GA_ON:
+        mid = html.escape(GA_MEASUREMENT_ID.strip(), quote=True)
+        parts.append(
+            "<!-- Google tag (gtag.js) -->\n"
+            f'<script async src="https://www.googletagmanager.com/gtag/js?id={mid}"></script>\n'
+            "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            f"gtag('js',new Date());gtag('config','{mid}');</script>"
+        )
+    if ANALYTICS_ON:
+        sid = html.escape(MATOMO_SITE_ID.strip(), quote=True)
+        parts.append(
+            f'<script>window.PR_MATOMO={{url:"{MATOMO_URL}",siteId:"{sid}"}};</script>\n'
+            f'<script defer src="{prefix}assets/js/analytics.js"></script>'
+        )
+    if not parts:
         return ""
-    sid = html.escape(MATOMO_SITE_ID.strip(), quote=True)
-    return (
-        f"{ANALYTICS_START}\n"
-        f'<script>window.PR_MATOMO={{url:"{MATOMO_URL}",siteId:"{sid}"}};</script>\n'
-        f'<script defer src="{prefix}assets/js/analytics.js"></script>\n'
-        f"{ANALYTICS_END}"
-    )
+    return f"{ANALYTICS_START}\n" + "\n".join(parts) + f"\n{ANALYTICS_END}"
 
 
 def html_pages():
@@ -729,7 +754,12 @@ def main():
         ld_n += int(s5)
     n = write_sitemap(pages)
     write_llms(pages)
-    state = "ON — Matomo site " + MATOMO_SITE_ID.strip() if ANALYTICS_ON else "OFF"
+    bits = []
+    if GA_ON:
+        bits.append("GA4 " + GA_MEASUREMENT_ID.strip())
+    if ANALYTICS_ON:
+        bits.append("Matomo site " + MATOMO_SITE_ID.strip())
+    state = "ON — " + ", ".join(bits) if bits else "OFF"
     print(f"Analytics: {state}")
     print(f"SEO tags added to {seo_n} page(s); CSP updated on {sec_n} page(s); "
           f"analytics tag changed on {an_n} page(s); legal links on {leg_n} page(s); "
