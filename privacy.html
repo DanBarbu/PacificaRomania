@@ -23,9 +23,10 @@
 <link rel="stylesheet" href="assets/css/style.css">
 <script>(function(){try{if(localStorage.getItem('pr-lang')==='ro')document.documentElement.className+=' lang-ro';}catch(e){}})();</script>
 <!-- analytics:start -->
-<!-- Google tag (gtag.js) -->
+<!-- Google Analytics 4 — Consent Mode v2 (consent-gated) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-5TJC3CR266"></script>
-<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5TJC3CR266');</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}window.PR_GA={id:"G-5TJC3CR266"};gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});try{if(localStorage.getItem('pr-consent')==='granted')gtag('consent','update',{analytics_storage:'granted'});}catch(e){}gtag('js',new Date());gtag('config','G-5TJC3CR266');</script>
+<script defer src="assets/js/analytics.js"></script>
 <!-- analytics:end -->
 </head>
 <body>
@@ -59,14 +60,14 @@
   <article class="legal-doc">
   <div data-l="en">
     <h1>Privacy &amp; Cookie Policy</h1>
-    <p class="note">Last updated: 16 July 2026. This policy explains how personal data is processed on <strong>pacificaromania.space</strong> in accordance with the EU General Data Protection Regulation (Regulation (EU) 2016/679, “GDPR”), the ePrivacy Directive 2002/58/EC, and Romanian Law no. 190/2018 and Law no. 506/2004.</p>
+    <p class="note">Last updated: 18 August 2026. This policy explains how personal data is processed on <strong>pacificaromania.space</strong> in accordance with the EU General Data Protection Regulation (Regulation (EU) 2016/679, “GDPR”), the ePrivacy Directive 2002/58/EC, and Romanian Law no. 190/2018 and Law no. 506/2004.</p>
 
     <h2>1. Who is responsible (data controller)</h2>
     <p>The controller for this website is the PacificaRomania collection, operated by <strong>AlgorithmIntelligence SRL</strong>, Casa14, 14–18 Prevederii St, Sector 3, Bucharest, Romania. Contact: <a href="mailto:danbarbu22@gmail.com">danbarbu22@gmail.com</a>. A data protection officer is not required and has not been appointed; enquiries reach the controller directly at that address.</p>
 
     <h2>2. What we collect, why, and the legal basis</h2>
     <ul>
-      <li><strong>Audience analytics (Matomo)</strong> — only if you consent. We record pages viewed, referring site, approximate location (country/region), device and browser type, timestamps, and your IP address in anonymised form. <em>Legal basis: your consent, Art. 6(1)(a) GDPR;</em> cookies are stored under Art. 5(3) ePrivacy with your prior consent. Analytics is self-hosted (Matomo) — data is not shared with any advertising network.</li>
+      <li><strong>Audience analytics (Google Analytics 4)</strong> — only if you consent. We use Google Analytics to understand aggregate site traffic: pages viewed, referring site, approximate location (country/region), device and browser type, and timestamps. IP addresses are anonymised by Google by default and are not stored by us. <em>Legal basis: your consent, Art. 6(1)(a) GDPR;</em> cookies are stored under Art. 5(3) ePrivacy with your prior consent. Google Consent Mode keeps analytics storage <em>denied</em> until you accept. The provider is <strong>Google Ireland Ltd</strong> (with Google LLC, USA); data is not shared with any advertising network and Google Signals / ads personalisation are off.</li>
       <li><strong>Correspondence</strong> — if you email us, we process your address and message to reply. <em>Legal basis: our legitimate interest in answering you, Art. 6(1)(f), or steps at your request, Art. 6(1)(b).</em></li>
       <li><strong>Hosting &amp; security logs</strong> — the site is served by GitHub Pages, which may process your IP address and request metadata to deliver pages and protect against abuse. <em>Legal basis: legitimate interest in security, Art. 6(1)(f).</em></li>
     </ul>
@@ -77,16 +78,16 @@
       <thead><tr><th>Name</th><th>Purpose</th><th>Type / duration</th></tr></thead>
       <tbody>
         <tr><td><code>pr-lang</code>, <code>pr-consent</code></td><td>Remember your language choice and your cookie decision.</td><td>Essential — local storage, no consent needed.</td></tr>
-        <tr><td><code>_pk_id.*</code>, <code>_pk_ses.*</code></td><td>Matomo analytics — distinguish visits/sessions.</td><td>Analytics — set only after you accept. <code>_pk_id</code> up to 13 months, <code>_pk_ses</code> ~30 min.</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_&lt;id&gt;</code></td><td>Google Analytics 4 — distinguish visitors/sessions.</td><td>Analytics — set only after you accept. Typically up to 2 years (adjustable in GA).</td></tr>
       </tbody>
     </table>
     <p>No analytics cookies are set until you choose “Accept”. You can change or withdraw your choice at any time via the <strong>“Cookie settings”</strong> button at the bottom-left of any page. If your browser sends “Do Not Track”, we treat that as a refusal.</p>
 
     <h2>4. How long we keep data</h2>
-    <p>Matomo raw visit logs are retained for a limited period (target: 14 months) and then deleted or aggregated. Emails are kept only as long as needed to handle your enquiry. Hosting logs follow the provider’s own retention.</p>
+    <p>Google Analytics data is retained according to the property’s data-retention setting (target: 14 months) and then deleted or aggregated. Emails are kept only as long as needed to handle your enquiry. Hosting logs follow the provider’s own retention.</p>
 
     <h2>5. Who receives the data (processors &amp; transfers)</h2>
-    <p>Hosting: <strong>GitHub, Inc.</strong> (GitHub Pages). The analytics server is self-hosted; we recommend and intend to keep it within the EU/EEA. Where a provider is located outside the EEA (e.g. GitHub in the United States), transfers rely on the European Commission’s Standard Contractual Clauses or an adequacy decision.</p>
+    <p>Hosting: <strong>GitHub, Inc.</strong> (GitHub Pages). Analytics: <strong>Google</strong> (Google Ireland Ltd / Google LLC). Where a provider is located outside the EEA (e.g. GitHub and Google in the United States), transfers rely on the EU–US Data Privacy Framework (Google is certified) and/or the European Commission’s Standard Contractual Clauses.</p>
 
     <h2>6. Your rights</h2>
     <p>Under the GDPR you may request <strong>access, rectification, erasure, restriction, portability</strong>, and may <strong>object</strong> to processing based on legitimate interest, and <strong>withdraw consent</strong> at any time without affecting prior lawful processing. To exercise any right, email <a href="mailto:danbarbu22@gmail.com">danbarbu22@gmail.com</a>. You also have the right to lodge a complaint with the Romanian supervisory authority, <strong>ANSPDCP</strong> (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener noreferrer">dataprotection.ro</a>), or your local authority.</p>
@@ -97,14 +98,14 @@
 
   <div data-l="ro">
     <h1>Politica de confidențialitate și cookie</h1>
-    <p class="note">Ultima actualizare: 16 iulie 2026. Această politică explică modul în care sunt prelucrate datele cu caracter personal pe <strong>pacificaromania.space</strong>, în conformitate cu Regulamentul general privind protecția datelor (Regulamentul (UE) 2016/679, „RGPD”), Directiva 2002/58/CE privind viața privată în comunicații electronice și Legea nr. 190/2018 și Legea nr. 506/2004 din România.</p>
+    <p class="note">Ultima actualizare: 18 august 2026. Această politică explică modul în care sunt prelucrate datele cu caracter personal pe <strong>pacificaromania.space</strong>, în conformitate cu Regulamentul general privind protecția datelor (Regulamentul (UE) 2016/679, „RGPD”), Directiva 2002/58/CE privind viața privată în comunicații electronice și Legea nr. 190/2018 și Legea nr. 506/2004 din România.</p>
 
     <h2>1. Cine răspunde (operatorul de date)</h2>
     <p>Operatorul acestui site este colecția PacificaRomania, administrată de <strong>AlgorithmIntelligence SRL</strong>, Casa14, str. Prevederii nr. 14–18, sector 3, București, România. Contact: <a href="mailto:danbarbu22@gmail.com">danbarbu22@gmail.com</a>. Nu este obligatorie și nu a fost desemnată o persoană responsabilă cu protecția datelor; solicitările ajung direct la operator, la adresa de mai sus.</p>
 
     <h2>2. Ce colectăm, de ce și temeiul juridic</h2>
     <ul>
-      <li><strong>Analiza audienței (Matomo)</strong> — numai dacă vă exprimați consimțământul. Înregistrăm paginile vizitate, site-ul de proveniență, localizarea aproximativă (țară/regiune), tipul de dispozitiv și browser, marcaje temporale și adresa IP în formă anonimizată. <em>Temei juridic: consimțământul dumneavoastră, art. 6 alin. (1) lit. (a) RGPD;</em> cookie-urile sunt stocate în temeiul art. 5 alin. (3) din Directiva ePrivacy, cu consimțământul prealabil. Analiza este găzduită de noi (Matomo) — datele nu sunt partajate cu nicio rețea de publicitate.</li>
+      <li><strong>Analiza audienței (Google Analytics 4)</strong> — numai dacă vă exprimați consimțământul. Folosim Google Analytics pentru a înțelege traficul agregat: paginile vizitate, site-ul de proveniență, localizarea aproximativă (țară/regiune), tipul de dispozitiv și browser și marcaje temporale. Adresele IP sunt anonimizate de Google în mod implicit și nu sunt stocate de noi. <em>Temei juridic: consimțământul dumneavoastră, art. 6 alin. (1) lit. (a) RGPD;</em> cookie-urile sunt stocate în temeiul art. 5 alin. (3) din Directiva ePrivacy, cu consimțământul prealabil. Google Consent Mode menține stocarea pentru analiză <em>refuzată</em> până când acceptați. Furnizorul este <strong>Google Ireland Ltd</strong> (împreună cu Google LLC, SUA); datele nu sunt partajate cu nicio rețea de publicitate, iar Google Signals / personalizarea reclamelor sunt dezactivate.</li>
       <li><strong>Corespondența</strong> — dacă ne scrieți, prelucrăm adresa și mesajul pentru a răspunde. <em>Temei juridic: interesul nostru legitim de a vă răspunde, art. 6 alin. (1) lit. (f), sau demersuri la cererea dumneavoastră, art. 6 alin. (1) lit. (b).</em></li>
       <li><strong>Jurnale de găzduire și securitate</strong> — site-ul este servit de GitHub Pages, care poate prelucra adresa IP și metadatele cererii pentru a livra paginile și a preveni abuzurile. <em>Temei juridic: interesul legitim privind securitatea, art. 6 alin. (1) lit. (f).</em></li>
     </ul>
@@ -115,16 +116,16 @@
       <thead><tr><th>Nume</th><th>Scop</th><th>Tip / durată</th></tr></thead>
       <tbody>
         <tr><td><code>pr-lang</code>, <code>pr-consent</code></td><td>Rețin limba aleasă și decizia privind cookie-urile.</td><td>Esențiale — stocare locală, fără consimțământ.</td></tr>
-        <tr><td><code>_pk_id.*</code>, <code>_pk_ses.*</code></td><td>Analiză Matomo — disting vizitele/sesiunile.</td><td>Analiză — plasate doar după acceptare. <code>_pk_id</code> până la 13 luni, <code>_pk_ses</code> ~30 min.</td></tr>
+        <tr><td><code>_ga</code>, <code>_ga_&lt;id&gt;</code></td><td>Google Analytics 4 — disting vizitatorii/sesiunile.</td><td>Analiză — plasate doar după acceptare. De regulă până la 2 ani (ajustabil în GA).</td></tr>
       </tbody>
     </table>
     <p>Niciun cookie de analiză nu este plasat înainte de a alege „Accept”. Vă puteți schimba sau retrage opțiunea oricând, prin butonul <strong>„Setări cookie”</strong> din colțul din stânga-jos al oricărei pagini. Dacă browserul trimite semnalul „Do Not Track”, îl tratăm ca refuz.</p>
 
     <h2>4. Cât timp păstrăm datele</h2>
-    <p>Jurnalele brute de vizite Matomo sunt păstrate pentru o perioadă limitată (țintă: 14 luni), apoi șterse sau agregate. E-mailurile sunt păstrate doar cât este necesar pentru soluționarea solicitării. Jurnalele de găzduire urmează politica de retenție a furnizorului.</p>
+    <p>Datele Google Analytics sunt păstrate conform setării de retenție a proprietății (țintă: 14 luni), apoi șterse sau agregate. E-mailurile sunt păstrate doar cât este necesar pentru soluționarea solicitării. Jurnalele de găzduire urmează politica de retenție a furnizorului.</p>
 
     <h2>5. Cine primește datele (persoane împuternicite și transferuri)</h2>
-    <p>Găzduire: <strong>GitHub, Inc.</strong> (GitHub Pages). Serverul de analiză este găzduit de noi; recomandăm și intenționăm să îl menținem în UE/SEE. Acolo unde un furnizor se află în afara SEE (de exemplu GitHub în Statele Unite), transferurile se bazează pe Clauzele contractuale standard ale Comisiei Europene sau pe o decizie de adecvare.</p>
+    <p>Găzduire: <strong>GitHub, Inc.</strong> (GitHub Pages). Analiză: <strong>Google</strong> (Google Ireland Ltd / Google LLC). Acolo unde un furnizor se află în afara SEE (de exemplu GitHub și Google în Statele Unite), transferurile se bazează pe Cadrul UE–SUA privind confidențialitatea datelor (Google este certificat) și/sau pe Clauzele contractuale standard ale Comisiei Europene.</p>
 
     <h2>6. Drepturile dumneavoastră</h2>
     <p>Conform RGPD, puteți solicita <strong>accesul, rectificarea, ștergerea, restricționarea, portabilitatea</strong>, vă puteți <strong>opune</strong> prelucrării întemeiate pe interes legitim și vă puteți <strong>retrage consimțământul</strong> oricând, fără a afecta prelucrarea legală anterioară. Pentru a exercita orice drept, scrieți la <a href="mailto:danbarbu22@gmail.com">danbarbu22@gmail.com</a>. Aveți și dreptul de a depune plângere la autoritatea de supraveghere din România, <strong>ANSPDCP</strong> (<a href="https://www.dataprotection.ro" target="_blank" rel="noopener noreferrer">dataprotection.ro</a>), sau la autoritatea locală.</p>

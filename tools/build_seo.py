@@ -152,21 +152,32 @@ def analytics_block(prefix):
     Matomo asset path. Returns '' (and upsert strips the block) when both off."""
     parts = []
     if GA_ON:
+        # Google Analytics 4 with Consent Mode v2: gtag.js loads, but consent
+        # defaults to DENIED (EU/UK-safe) so no analytics cookies/data are stored
+        # until the visitor opts in via the banner (assets/js/analytics.js), which
+        # flips analytics_storage to 'granted'. A returning visitor who already
+        # accepted is granted immediately from localStorage 'pr-consent'.
         mid = html.escape(GA_MEASUREMENT_ID.strip(), quote=True)
         parts.append(
-            "<!-- Google tag (gtag.js) -->\n"
+            "<!-- Google Analytics 4 — Consent Mode v2 (consent-gated) -->\n"
             f'<script async src="https://www.googletagmanager.com/gtag/js?id={mid}"></script>\n'
             "<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            f'window.PR_GA={{id:"{mid}"}};'
+            "gtag('consent','default',{ad_storage:'denied',ad_user_data:'denied',"
+            "ad_personalization:'denied',analytics_storage:'denied',wait_for_update:500});"
+            "try{if(localStorage.getItem('pr-consent')==='granted')"
+            "gtag('consent','update',{analytics_storage:'granted'});}catch(e){}"
             f"gtag('js',new Date());gtag('config','{mid}');</script>"
         )
     if ANALYTICS_ON:
         sid = html.escape(MATOMO_SITE_ID.strip(), quote=True)
         parts.append(
-            f'<script>window.PR_MATOMO={{url:"{MATOMO_URL}",siteId:"{sid}"}};</script>\n'
-            f'<script defer src="{prefix}assets/js/analytics.js"></script>'
+            f'<script>window.PR_MATOMO={{url:"{MATOMO_URL}",siteId:"{sid}"}};</script>'
         )
     if not parts:
         return ""
+    # One consent-banner script drives whichever providers are configured.
+    parts.append(f'<script defer src="{prefix}assets/js/analytics.js"></script>')
     return f"{ANALYTICS_START}\n" + "\n".join(parts) + f"\n{ANALYTICS_END}"
 
 

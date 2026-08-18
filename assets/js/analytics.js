@@ -1,14 +1,22 @@
-/* PacificaRomania — consent-gated Matomo analytics (EU GDPR + ePrivacy).
+/* PacificaRomania — consent-gated analytics (EU/UK GDPR + ePrivacy).
  *
- * Matomo is loaded ONLY after the visitor opts in. Reject is as easy as accept,
- * Do-Not-Track is honoured as a refusal, and the choice can be withdrawn at any
- * time via the "Cookie settings" control. Configuration is provided by an inline
- *   window.PR_MATOMO = { url: "https://…/", siteId: "1" }
- * emitted by tools/build_seo.py. If that config is absent, nothing happens.
+ * Drives Google Analytics 4 (Consent Mode v2) and/or self-hosted Matomo. No
+ * analytics cookies or personal data are stored until the visitor opts in;
+ * Reject is as easy as Accept, Do-Not-Track is honoured as a refusal, and the
+ * choice can be withdrawn any time via the "Cookie settings" control.
+ *
+ * Config is emitted into <head> by tools/build_seo.py as:
+ *   window.PR_GA     = { id: "G-XXXXXXXXXX" }         // Google Analytics 4
+ *   window.PR_MATOMO = { url: "https://…/", siteId: "1" }  // Matomo
+ * For GA, the <head> also loads gtag.js and sets Consent Mode defaults to
+ * DENIED; this script flips analytics_storage to GRANTED on opt-in. If neither
+ * config is present, nothing happens.
  */
 (function () {
-  var cfg = window.PR_MATOMO;
-  if (!cfg || !cfg.url || !cfg.siteId) return;
+  var GA = window.PR_GA && window.PR_GA.id ? window.PR_GA : null;
+  var MT = (window.PR_MATOMO && window.PR_MATOMO.url && window.PR_MATOMO.siteId)
+    ? window.PR_MATOMO : null;
+  if (!GA && !MT) return;
 
   var KEY = "pr-consent";                 // "granted" | "denied"
   var stored = null;
@@ -16,39 +24,67 @@
   var dnt = (navigator.doNotTrack === "1" || window.doNotTrack === "1" ||
              navigator.doNotTrack === "yes");
 
-  var _paq = (window._paq = window._paq || []);
-  var matomoLoaded = false;
+  // ---- Google Analytics 4 (Consent Mode v2) --------------------------------
+  function gtag() { (window.dataLayer = window.dataLayer || []).push(arguments); }
+  function gaGrant() {
+    if (!GA) return;
+    gtag("consent", "update", { analytics_storage: "granted" });
+    gtag("event", "page_view");           // count this page now that we may
+  }
+  function gaDeny() {
+    if (!GA) return;
+    gtag("consent", "update", { analytics_storage: "denied" });
+  }
 
-  function bootstrapMatomo() {
-    // Require consent up front: no cookies, no tracking until we say so.
+  // ---- Matomo (self-hosted) ------------------------------------------------
+  var _paq = MT ? (window._paq = window._paq || []) : null;
+  var matomoLoaded = false;
+  function matomoBootstrap() {
+    if (!MT) return;
     _paq.push(["requireConsent"]);
     _paq.push(["requireCookieConsent"]);
     _paq.push(["enableLinkTracking"]);
-    _paq.push(["setTrackerUrl", cfg.url + "matomo.php"]);
-    _paq.push(["setSiteId", cfg.siteId]);
+    _paq.push(["setTrackerUrl", MT.url + "matomo.php"]);
+    _paq.push(["setSiteId", MT.siteId]);
   }
-
-  function loadMatomoJs() {
-    if (matomoLoaded) return;
+  function matomoLoadJs() {
+    if (!MT || matomoLoaded) return;
     matomoLoaded = true;
     var g = document.createElement("script");
     g.async = true;
-    g.src = cfg.url + "matomo.js";
+    g.src = MT.url + "matomo.js";
     var s = document.getElementsByTagName("script")[0];
     s.parentNode.insertBefore(g, s);
+  }
+  function matomoGrant() {
+    if (!MT) return;
+    _paq.push(["setConsentGiven"]);
+    _paq.push(["setCookieConsentGiven"]);
+    _paq.push(["trackPageView"]);
+    matomoLoadJs();
+  }
+  function matomoDeny() {
+    if (!MT) return;
+    _paq.push(["forgetConsentGiven"]);
   }
 
   function grant() {
     try { localStorage.setItem(KEY, "granted"); } catch (e) {}
-    _paq.push(["setConsentGiven"]);
-    _paq.push(["setCookieConsentGiven"]);
-    _paq.push(["trackPageView"]);
-    loadMatomoJs();
+    gaGrant(); matomoGrant();
   }
-
   function deny() {
     try { localStorage.setItem(KEY, "denied"); } catch (e) {}
-    _paq.push(["forgetConsentGiven"]);
+    gaDeny(); matomoDeny();
+  }
+
+  // Human-readable provider name for the banner copy.
+  function providerEN() {
+    if (GA && MT) return "Google Analytics and Matomo";
+    return GA ? "Google Analytics" : "Matomo";
+  }
+  function providerRO() {
+    if (GA && MT) return "Google Analytics și Matomo";
+    return GA ? "Google Analytics" : "Matomo";
   }
 
   // ---- consent banner UI (bilingual via existing data-l / .lang-ro CSS) ----
@@ -63,8 +99,8 @@
     banner.innerHTML =
       '<div class="consent-inner">' +
         '<p class="consent-text">' +
-          '<span data-l="en">We use <strong>Matomo</strong> analytics (self-hosted) to understand site traffic. It sets cookies and records visit data, including an anonymised approximate location, only if you agree. See our <a href="' + rel() + 'privacy.html">Privacy &amp; Cookie Policy</a>.</span>' +
-          '<span data-l="ro">Folosim analiza <strong>Matomo</strong> (găzduită de noi) pentru a înțelege traficul. Aceasta plasează cookie-uri și înregistrează date despre vizită, inclusiv o localizare aproximativă anonimizată, doar dacă sunteți de acord. Vedeți <a href="' + rel() + 'privacy.html">Politica de confidențialitate și cookie</a>.</span>' +
+          '<span data-l="en">We use <strong>' + providerEN() + '</strong> to understand site traffic. It sets cookies and records visit data only if you agree; nothing is stored until then. See our <a href="' + rel() + 'privacy.html">Privacy &amp; Cookie Policy</a>.</span>' +
+          '<span data-l="ro">Folosim <strong>' + providerRO() + '</strong> pentru a înțelege traficul. Plasează cookie-uri și înregistrează date despre vizită doar dacă sunteți de acord; până atunci nu se stochează nimic. Vedeți <a href="' + rel() + 'privacy.html">Politica de confidențialitate și cookie</a>.</span>' +
         '</p>' +
         '<div class="consent-actions">' +
           '<button type="button" class="consent-btn consent-reject" data-act="deny">' +
@@ -102,7 +138,6 @@
 
   // Relative prefix so links resolve from /journal/ and /collection/ too.
   function rel() {
-    // /journal/x.html -> 2 path segments; root pages -> 1.
     var depth = location.pathname.split("/").filter(Boolean).length;
     return depth > 1 ? "../" : "";
   }
@@ -114,7 +149,7 @@
   };
 
   function start() {
-    bootstrapMatomo();
+    matomoBootstrap();
     if (stored === "granted") {
       grant();
       showSettingsLink();

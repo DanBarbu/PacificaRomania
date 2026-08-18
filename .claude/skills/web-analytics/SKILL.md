@@ -166,6 +166,14 @@ overwritten on the next build). The pattern generalises to any post-processor:
   `<!-- analytics:end -->` markers; the injector inserts/updates/removes that
   block in each `<head>` idempotently, and skips excluded pages (e.g.
   `admin.html`).
+- It is **consent-gated (Consent Mode v2, §4)**: the head sets
+  `analytics_storage:'denied'` by default and only grants it from a stored
+  `pr-consent` choice; a shared bilingual banner (`assets/js/analytics.js`,
+  DNT-honouring, withdrawable via a "Cookie settings" control) flips consent to
+  `granted` on opt-in and calls `gtag('consent','update',…)`. The
+  `privacy.html` policy discloses the GA provider, cookies (`_ga`, `_ga_<id>`),
+  retention and the US-transfer basis — update the policy whenever the provider
+  changes.
 - Run `python3 tools/build_seo.py` to apply to all pages, then
   `python3 tools/verify.py`. Turn analytics off by blanking the ID and
   rebuilding — the block and CSP entries are removed automatically.
