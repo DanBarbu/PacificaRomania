@@ -53,7 +53,7 @@ ANALYTICS_ON = bool(MATOMO_SITE_ID.strip())
 # is injected into <head> on every page and the Content-Security-Policy is
 # widened to allow Google's domains. GA4 anonymises IPs by default. Paste the
 # Measurement ID (format G-XXXXXXXXXX); empty = OFF.
-GA_MEASUREMENT_ID = "G-5TJC3CR266"
+GA_MEASUREMENT_ID = ""   # set to pacificaromania.space own GA4 Measurement ID (G-XXXXXXXXXX)
 GA_ON = bool(GA_MEASUREMENT_ID.strip())
 
 # ---- Search-engine verification (AI visibility Phase 3) ----------------------
