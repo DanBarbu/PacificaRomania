@@ -113,6 +113,7 @@ ESSAY_IMG = {
     "objects-that-remember-the-sea": "matau-hook.jpg",
     "the-weapon-that-comes-back": "the-weapon-that-comes-back.jpg",
     "two-ways-to-rise": "pukumani-pole.jpg",
+    "the-wall-that-learned-to-travel": "the-wall-that-learned-to-travel.jpg",
 }
 
 
