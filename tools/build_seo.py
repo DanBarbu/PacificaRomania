@@ -114,6 +114,7 @@ ESSAY_IMG = {
     "the-weapon-that-comes-back": "the-weapon-that-comes-back.jpg",
     "two-ways-to-rise": "pukumani-pole.jpg",
     "the-wall-that-learned-to-travel": "the-wall-that-learned-to-travel.jpg",
+    "the-horse-that-crosses-over": "kuda-kepang-caiuti.jpg",
 }
 
 
